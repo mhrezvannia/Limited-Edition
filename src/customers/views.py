@@ -15,5 +15,5 @@ class CustomerRegisterView(View):
             customer = form.save(commit=False)
             customer.role = 0
             customer.save()
-            # return redirect
+            return redirect('website:index')
         return render(request, 'register_customer.html', {'form': form})
