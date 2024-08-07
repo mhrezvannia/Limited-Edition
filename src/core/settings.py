@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'orders.apps.OrdersConfig',
     'vendors.apps.VendorsConfig',
-    'dashboard.apps.DashboardConfig'
+    'dashboards.apps.DashboardsConfig'
 ]
 
 MIDDLEWARE = [
@@ -127,3 +127,6 @@ STATICFILES_DIRS = [BASE_DIR / 'statics']
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+AUTH_USER_MODEL = 'accounts.User'
