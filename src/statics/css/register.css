@@ -1,0 +1,4 @@
+.card {
+    max-width: 500px; /* Set a maximum width for the card */
+    margin: auto; /* Center the card horizontally */
+}
