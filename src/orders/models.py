@@ -8,7 +8,7 @@ class DiscountCode(models.Model):
     code = models.CharField(max_length=255)
     customer = models.ForeignKey(User, on_delete=models.CASCADE)
     discount_type = models.IntegerField(default=0)
-    discount_value = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    discount_value = models.FloatField(null=True, blank=True)
     expiration_date = models.DateTimeField(blank=True, null=True)
     usage_count = models.IntegerField(default=0)
     remain_count = models.IntegerField(blank=True, null=True)
@@ -35,6 +35,7 @@ class OrderProduct(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
+    price = models.FloatField(null=True, blank=True)
 
     class Meta:
         unique_together = ('order', 'product')
