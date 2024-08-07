@@ -14,6 +14,7 @@ class CustomerRegisterView(View):
         if form.is_valid():
             customer = form.save(commit=False)
             customer.role = 0
+            customer.set_password(form.cleaned_data['password'])
             customer.save()
             return redirect('website:index')
         return render(request, 'register_customer.html', {'form': form})

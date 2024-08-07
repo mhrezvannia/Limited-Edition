@@ -2,16 +2,30 @@ from django.contrib.auth import login, logout
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
+from django.views import View
+from .forms import *
+from django.contrib.auth import authenticate, login
 
+class CustomLoginView(View):
 
-class CustomLoginView(LoginView):
     template_name = 'login.html'
-    redirect_authenticated_user = True
-    success_url = reverse_lazy('website:index')
 
-    def form_valid(self, form):
-        login(self.request, form.get_user())
-        return super(CustomLoginView, self).form_valid(form)
+    def get(self, request):
+        form = LoginForms()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = LoginForms(request.POST)
+        if form.is_valid():
+            email = form.cleaned_data.get('email')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=email, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect('website:index')
+        # return render(request, self.template_name, {'form': form})
+
+
 
 
 def logoutview(request):
