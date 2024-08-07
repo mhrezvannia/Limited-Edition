@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 class CustomLoginView(LoginView):
     template_name = 'login.html'
     redirect_authenticated_user = True
-    success_url = reverse_lazy('') # TODO add url here
+    success_url = reverse_lazy('website:index')
 
     def form_valid(self, form):
         login(self.request, form.get_user())
@@ -16,4 +16,4 @@ class CustomLoginView(LoginView):
 
 def logoutview(request):
     logout(request)
-    return redirect('') # TODO add url here
+    return redirect('website:index')
