@@ -12,7 +12,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 @admin.register(ProductPicture)
 class ProductPicture(admin.ModelAdmin):
-    list_display = ('file_name', 'product')
+    list_display = ('title', 'product')
 
 
 @admin.register(Rate)
@@ -27,9 +27,11 @@ class Comment(admin.ModelAdmin):
 
 @admin.register(Category)
 class Category(admin.ModelAdmin):
-    list_display = ('__all__',)
+    list_display = ('title', 'parent_category')
 
 
 @admin.register(ProductCategory)
 class ProductCategory(admin.ModelAdmin):
-    list_display = ('__all__',)
+    list_display = ('product', 'category')
+
+

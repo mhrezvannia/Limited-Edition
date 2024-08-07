@@ -19,13 +19,13 @@ class Product(models.Model):
 
 
 class ProductPicture(models.Model):
-    file_name = models.CharField(max_length=255)
-    url = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, null=True)
+    image = models.ImageField(upload_to='product_pics/', null=True)
     alt = models.CharField(max_length=255, blank=True, null=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.file_name
+        return self.title
 
 
 class Rate(models.Model):
@@ -50,7 +50,7 @@ class Comment(models.Model):
 class Category(models.Model):
     title = models.CharField(max_length=255)
     parent_category = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True)
-    image_url = models.CharField(max_length=255)
+    image = models.ImageField(upload_to='category_pics/', null=True)
 
     def __str__(self):
         return self.title
