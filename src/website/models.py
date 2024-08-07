@@ -2,6 +2,7 @@ from django.db import models
 from accounts.models import User
 from customers.models import Address
 from vendors.models import Vendor
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class Product(models.Model):
@@ -31,7 +32,8 @@ class ProductPicture(models.Model):
 class Rate(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     customer = models.ForeignKey(User, on_delete=models.CASCADE)
-    star_count = models.IntegerField()
+    star_count = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(0), MaxValueValidator(5)])
 
     def __str__(self):
         return f'{self.customer.email} - {self.product.title}'
@@ -52,6 +54,9 @@ class Category(models.Model):
     parent_category = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True)
     image = models.ImageField(upload_to='category_pics/', null=True)
 
+    class Meta:
+        verbose_name_plural = 'Categories'
+
     def __str__(self):
         return self.title
 
@@ -62,3 +67,4 @@ class ProductCategory(models.Model):
 
     class Meta:
         unique_together = ('product', 'category')
+        verbose_name_plural = 'product categories'
