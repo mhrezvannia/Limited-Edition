@@ -23,3 +23,13 @@ class Rate(admin.ModelAdmin):
 @admin.register(Comment)
 class Comment(admin.ModelAdmin):
     list_display = ('product', 'customer', 'approved')
+
+
+@admin.register(Category)
+class Category(admin.ModelAdmin):
+    list_display = ('__all__',)
+
+
+@admin.register(ProductCategory)
+class ProductCategory(admin.ModelAdmin):
+    list_display = ('__all__',)
