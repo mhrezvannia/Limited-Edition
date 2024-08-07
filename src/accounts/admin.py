@@ -63,8 +63,7 @@ class UserAdmin(BaseUserAdmin):
     list_filter = ["phone"]
     fieldsets = [
 
-        ("Personal info", {"fields": ["phone"]}), ("Personal info", {"fields": ["email"]}),
-        ("Personal info", {"fields": ["first_name"]}), ("Personal info", {"fields": ["last_name"]}),
+        ("Personal info", {"fields": ["phone", "first_name", "last_name", "email", ]}),
         ("Role", {"fields": ["role"]}),
         ("Permissions", {"fields": ["is_admin"]}),
     ]
