@@ -23,11 +23,18 @@ class CustomLoginView(View):
             if user is not None:
                 login(request, user)
                 return redirect('website:index')
-        # return render(request, self.template_name, {'form': form})
+            else:
+                form.add_error(None, 'Invalid email or password.')
+        return render(request, self.template_name, {'form': form})
 
 
 
 
-def logoutview(request):
-    logout(request)
-    return redirect('website:index')
+# def logoutview(request):
+#     logout(request)
+#     return redirect('website:index')
+
+class CustomLogoutView(View):
+    def get(self, request):
+        logout(request)
+        return redirect('website:index')
