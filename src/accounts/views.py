@@ -6,8 +6,8 @@ from django.views import View
 from .forms import *
 from django.contrib.auth import authenticate, login
 
-class CustomLoginView(View):
 
+class CustomLoginView(View):
     template_name = 'login.html'
 
     def get(self, request):
@@ -26,8 +26,6 @@ class CustomLoginView(View):
             else:
                 form.add_error(None, 'Invalid email or password.')
         return render(request, self.template_name, {'form': form})
-
-
 
 
 # def logoutview(request):
