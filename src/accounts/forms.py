@@ -83,3 +83,6 @@ class CustomLoginForm(AuthenticationForm):
                 raise forms.ValidationError("اطلاعات وارد شده نامعتبر است")
 
         return self.cleaned_data
+
+
+
