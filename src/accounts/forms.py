@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import get_user_model
 from vendors.models import Vendor, VendorEmployee
 from accounts.models import Address, Customer, CustomUser
+from vendors.models import VendorEmployee
 
 
 # class LoginForms(forms.Form):
@@ -41,11 +42,12 @@ class VendorOwnerSignUpForm(UserCreationForm):
     city = forms.CharField(max_length=255, required=True)
 
     class Meta:
-        model = CustomUser
+        model = VendorEmployee
         fields = ['email', 'phone_number', 'password1', 'password2']
 
     def save(self, commit=True):
         user = super().save(commit=False)
+        user.role = 'owner'  # Set the role to 'owner'
         if commit:
             user.save()
             # Create and save the Address instance
@@ -56,11 +58,13 @@ class VendorOwnerSignUpForm(UserCreationForm):
                 user=user
             )
             # Create and save the Vendor instance
-            Vendor.objects.create(
+            vendor = Vendor.objects.create(
                 name=self.cleaned_data['vendor_name'],
-                address=address,
-                owner=user
+                address=address
             )
+            # Assign the vendor to the user
+            user.vendor = vendor
+            user.save()
         return user
 
 
