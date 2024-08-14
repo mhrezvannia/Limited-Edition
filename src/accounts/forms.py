@@ -1,8 +1,8 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import get_user_model
-from vendors.models import Vendor
-from accounts.models import Address, VendorEmployee
+from vendors.models import Vendor, VendorEmployee
+from accounts.models import Address
 
 # class LoginForms(forms.Form):
 #

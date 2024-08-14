@@ -1,16 +1,16 @@
 from django.shortcuts import render, redirect
 from django.views import View
-from .forms import CustomerCreationForm
+from accounts.forms import CustomerSignUpForm
 
 
 class CustomerRegisterView(View):
     def get(self, request):
-        form = CustomerCreationForm()
+        form = CustomerSignUpForm()
         context = {'form': form}
         return render(request, 'register_customer.html', context)
 
     def post(self, request):
-        form = CustomerCreationForm(request.POST)
+        form = CustomerSignUpForm(request.POST)
         if form.is_valid():
             customer = form.save(commit=False)
             customer.role = 0

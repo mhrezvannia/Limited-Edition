@@ -130,4 +130,11 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-AUTH_USER_MODEL = 'accounts.User'
+AUTH_USER_MODEL = 'accounts.CustomUser'
+
+
+AUTHENTICATION_BACKENDS = [
+    'accounts.backends.EmailOrPhoneBackend',  # بک‌اند سفارشی شما
+    'django.contrib.auth.backends.ModelBackend',  # بک‌اند پیش‌فرض
+]
+

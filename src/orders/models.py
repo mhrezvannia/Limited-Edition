@@ -1,12 +1,11 @@
 from django.db import models
-from accounts.models import User
-from customers.models import Address
+from accounts.models import CustomUser, Address
 from website.models import Product
 
 
 class DiscountCode(models.Model):
     code = models.CharField(max_length=255)
-    customer = models.ForeignKey(User, on_delete=models.CASCADE)
+    customer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     discount_type = models.IntegerField(default=0)
     discount_value = models.FloatField(null=True, blank=True)
     expiration_date = models.DateTimeField(blank=True, null=True)
@@ -21,7 +20,7 @@ class DiscountCode(models.Model):
 class Order(models.Model):
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.IntegerField(default=0)
-    customer = models.ForeignKey(User, on_delete=models.CASCADE)
+    customer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
     discount_code = models.ForeignKey(DiscountCode, on_delete=models.SET_NULL, null=True, blank=True)
@@ -42,7 +41,7 @@ class OrderProduct(models.Model):
 
 
 class Cart(models.Model):
-    customer = models.ForeignKey(User, on_delete=models.CASCADE)
+    customer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
 
 class CartProduct(models.Model):

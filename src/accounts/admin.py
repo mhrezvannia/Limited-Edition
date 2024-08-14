@@ -1,87 +1,46 @@
-from django import forms
 from django.contrib import admin
-from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from django.contrib.auth.forms import ReadOnlyPasswordHashField
-from django.core.exceptions import ValidationError
-
-from accounts.models import *
+from .models import CustomUser, Customer, Address
+from .forms import CustomerSignUpForm, VendorOwnerSignUpForm
 
 
-class UserCreationForm(forms.ModelForm):
-    """A form for creating new users. Includes all the required
-    fields, plus a repeated password."""
+class CustomUserAdmin(BaseUserAdmin):
+    model = CustomUser
+    add_form = CustomerSignUpForm  # Use this for user creation in the admin interface
 
-    password1 = forms.CharField(label="Password", widget=forms.PasswordInput)
-    password2 = forms.CharField(
-        label="Password confirmation", widget=forms.PasswordInput
+    list_display = ('email', 'phone_number', 'is_active', 'is_staff')
+    list_filter = ('is_staff', 'is_active')
+
+    fieldsets = (
+        (None, {'fields': ('email', 'phone_number', 'password')}),
+        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser', 'user_permissions', 'groups')}),
+        # ('Important Dates', {'fields': ('last_login', 'date_joined')}),
     )
 
-    class Meta:
-        model = User
-        fields = ["email", 'phone']
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('email', 'phone_number', 'password1', 'password2'),
+        }),
+    )
 
-    def clean_password2(self):
-        # Check that the two password entries match
-        password1 = self.cleaned_data.get("password1")
-        password2 = self.cleaned_data.get("password2")
-        if password1 and password2 and password1 != password2:
-            raise ValidationError("Passwords don't match")
-        return password2
-
-    def save(self, commit=True):
-        # Save the provided password in hashed format
-        user = super().save(commit=False)
-        user.set_password(self.cleaned_data["password1"])
-        if commit:
-            user.save()
-        return user
+    search_fields = ('email', 'phone_number')
+    ordering = ('email',)
+    filter_horizontal = ('user_permissions', 'groups')
 
 
-class UserChangeForm(forms.ModelForm):
-    """A form for updating users. Includes all the fields on
-    the user, but replaces the password field with admin's
-    disabled password hash display field.
-    """
-
-    password = ReadOnlyPasswordHashField()
-
-    class Meta:
-        model = User
-        fields = ["password", 'phone', 'email', 'first_name', 'last_name']
+class CustomerAdmin(admin.ModelAdmin):
+    model = Customer
+    list_display = ('user', 'first_name', 'last_name')
+    search_fields = ('user__email', 'first_name', 'last_name')
 
 
-class UserAdmin(BaseUserAdmin):
-    # The forms to add and change user instances
-    form = UserChangeForm
-    add_form = UserCreationForm
-
-    # The fields to be used in displaying the User model.
-    # These override the definitions on the base UserAdmin
-    # that reference specific fields on auth.User.
-    list_display = ["email", "phone", "first_name", "last_name", "role"]
-    list_filter = ["phone"]
-    fieldsets = [
-
-        ("Personal info", {"fields": ["phone", "first_name", "last_name", "email", "is_active"]}),
-        ("Role", {"fields": ["role"]}),
-        ("Permissions", {"fields": ["is_admin"]}),
-    ]
-    # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
-    # overrides get_fieldsets to use this attribute when creating a user.
-    add_fieldsets = [
-        (
-            None,
-            {
-                "classes": ["wide"],
-                "fields": ["email", "phone", "password1", "password2", "role", "first_name", "last_name"],
-            },
-        ),
-    ]
-    search_fields = ["email", "phone"]
-    ordering = ["email"]
-    filter_horizontal = []
+class AddressAdmin(admin.ModelAdmin):
+    model = Address
+    list_display = ('user', 'zip_code', 'city', 'detail')
+    search_fields = ('user__email', 'zip_code', 'city')
 
 
-# Now register the new UserAdmin...
-admin.site.register(User, UserAdmin)
+admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(Customer, CustomerAdmin)
+admin.site.register(Address, AddressAdmin)
