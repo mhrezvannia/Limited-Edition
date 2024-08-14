@@ -4,12 +4,11 @@ from django.contrib.auth import get_user_model
 from vendors.models import Vendor, VendorEmployee
 from accounts.models import Address, Customer, CustomUser
 
+
 # class LoginForms(forms.Form):
 #
 #     email = forms.EmailField()
 #     password = forms.CharField(max_length=128)
-
-CustomUser = get_user_model()
 
 
 class AddressForm(forms.ModelForm):
@@ -57,10 +56,7 @@ class VendorOwnerSignUpForm(UserCreationForm):
         return user
 
 
-class VendorEmployeeForm(forms.ModelForm):
-    class Meta:
-        model = VendorEmployee
-        fields = ['vendor', 'role']
+
 
 
 class CustomLoginForm(AuthenticationForm):
@@ -83,6 +79,3 @@ class CustomLoginForm(AuthenticationForm):
                 raise forms.ValidationError("اطلاعات وارد شده نامعتبر است")
 
         return self.cleaned_data
-
-
-
