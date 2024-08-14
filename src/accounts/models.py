@@ -1,6 +1,5 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.db import models
-from vendors.models import Vendor
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
@@ -118,19 +117,4 @@ class Address(models.Model):
         return f'{self.detail}, {self.city}'
 
 
-class VendorEmployee(models.Model):
-    ROLE_CHOICES = (
-        ('owner', 'Owner'),
-        ('product_manager', 'Product Manager'),
-        ('operator', 'Operator'),
-    )
 
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    vendor = models.ForeignKey(Vendor, related_name='employees', on_delete=models.CASCADE)
-    role = models.CharField(max_length=20, choices=ROLE_CHOICES)
-
-    class Meta:
-        unique_together = ('user', 'vendor')
-
-    def __str__(self):
-        return f"{self.user} - {self.vendor}"
