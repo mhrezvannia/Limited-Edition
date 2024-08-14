@@ -83,8 +83,8 @@ class CustomUserManager(BaseUserManager):
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(unique=True, blank=True, null=True)
-    phone_number = models.CharField(max_length=20, unique=True, blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
+    phone_number = models.CharField(max_length=20, blank=True, null=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -110,7 +110,7 @@ class Address(models.Model):
     zip_code = models.CharField(max_length=255, blank=True, null=True)
     detail = models.TextField()
     city = models.CharField(max_length=255)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser,related_name='addresses' ,on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return f'{self.detail}, {self.city}'

@@ -73,8 +73,8 @@ class CustomLoginView(FormView):
 class OwnerSignUpView(CreateView):
     form_class = VendorOwnerSignUpForm
     template_name = 'vendor_register.html'
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy('accounts:login')
 
     def form_valid(self, form):
-        user = form.save()
-        return super().form_valid(form)
+        form.save()
+        return None

@@ -47,24 +47,27 @@ class VendorOwnerSignUpForm(UserCreationForm):
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        user.role = 'owner'  # Set the role to 'owner'
+        user.role = 'owner'
+
         if commit:
             user.save()
-            # Create and save the Address instance
+
             address = Address.objects.create(
                 zip_code=self.cleaned_data['zip_code'],
                 detail=self.cleaned_data['detail'],
                 city=self.cleaned_data['city'],
                 user=user
             )
-            # Create and save the Vendor instance
+
             vendor = Vendor.objects.create(
                 name=self.cleaned_data['vendor_name'],
-                address=address
+                address=address,
+                owner=user
             )
-            # Assign the vendor to the user
+
             user.vendor = vendor
             user.save()
+
         return user
 
 

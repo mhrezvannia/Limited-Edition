@@ -6,8 +6,8 @@ from accounts.models import CustomUser, Address
 
 class Vendor(models.Model):
     name = models.CharField(max_length=255)
-    address = models.ForeignKey(Address, on_delete=models.CASCADE)
-    owner = models.ForeignKey(CustomUser, related_name='owned_vendors', on_delete=models.CASCADE)
+    address = models.ForeignKey(Address,related_name='addresses' ,on_delete=models.CASCADE)
+    owner = models.ForeignKey(CustomUser, related_name='owned_vendors', on_delete=models.CASCADE, null=True)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
@@ -21,11 +21,9 @@ class VendorEmployee(CustomUser):
         ('operator', 'Operator'),
     )
 
-    vendor = models.ForeignKey(Vendor, related_name='employees', on_delete=models.CASCADE)
+    vendor = models.ForeignKey(Vendor, related_name='employees', on_delete=models.CASCADE, null=True)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES)
 
-    class Meta:
-        unique_together = ('vendor', 'role')
 
     def __str__(self):
         return f"{self.email} {self.phone_number} - {self.role}"
