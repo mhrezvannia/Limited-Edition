@@ -56,9 +56,6 @@ class VendorOwnerSignUpForm(UserCreationForm):
         return user
 
 
-
-
-
 class CustomLoginForm(AuthenticationForm):
     username = forms.CharField(label='Email or Phone')
 

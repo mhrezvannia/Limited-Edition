@@ -68,3 +68,13 @@ class CustomLoginView(FormView):
             # return redirect('vendor_dashboard', vendor_id=employee.vendor.id)
         else:
             return super().form_valid(form)
+
+
+class OwnerSignUpView(CreateView):
+    form_class = VendorOwnerSignUpForm
+    template_name = 'vendor_register.html'
+    success_url = reverse_lazy('login')
+
+    def form_valid(self, form):
+        user = form.save()
+        return super().form_valid(form)
