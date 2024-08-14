@@ -52,3 +52,23 @@ class VendorEmployeeForm(forms.ModelForm):
         fields = ['user', 'role']
 
 
+class CustomLoginForm(AuthenticationForm):
+    username = forms.CharField(label='Email or Phone')
+
+    def clean(self):
+        username = self.cleaned_data.get('username')
+        password = self.cleaned_data.get('password')
+
+        if username and password:
+            try:
+                user = CustomUser.objects.filter(email=username).first() or \
+                       CustomUser.objects.filter(phone_number=username).first()
+
+                if user and user.check_password(password):
+                    self.user_cache = user
+                else:
+                    raise forms.ValidationError("اطلاعات وارد شده نامعتبر است")
+            except CustomUser.DoesNotExist:
+                raise forms.ValidationError("اطلاعات وارد شده نامعتبر است")
+
+        return self.cleaned_data
