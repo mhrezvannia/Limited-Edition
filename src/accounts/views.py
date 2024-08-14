@@ -77,4 +77,4 @@ class OwnerSignUpView(CreateView):
 
     def form_valid(self, form):
         form.save()
-        return None
+        return redirect('accounts:login')

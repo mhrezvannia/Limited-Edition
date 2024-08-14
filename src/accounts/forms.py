@@ -52,21 +52,21 @@ class VendorOwnerSignUpForm(UserCreationForm):
         if commit:
             user.save()
 
-            address = Address.objects.create(
-                zip_code=self.cleaned_data['zip_code'],
-                detail=self.cleaned_data['detail'],
-                city=self.cleaned_data['city'],
-                user=user
-            )
+        address = Address.objects.create(
+            zip_code=self.cleaned_data['zip_code'],
+            detail=self.cleaned_data['detail'],
+            city=self.cleaned_data['city'],
+            user=user
+        )
 
-            vendor = Vendor.objects.create(
-                name=self.cleaned_data['vendor_name'],
-                address=address,
-                owner=user
-            )
+        vendor = Vendor.objects.create(
+            name=self.cleaned_data['vendor_name'],
+            address=address,
+            owner=user
+        )
 
-            user.vendor = vendor
-            user.save()
+        user.vendor = vendor
+        user.save()
 
         return user
 
