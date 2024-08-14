@@ -11,11 +11,11 @@ class CustomLoginView(View):
     template_name = 'login.html'
 
     def get(self, request):
-        form = LoginForms()
+        form = CustomLoginForm()
         return render(request, self.template_name, {'form': form})
 
     def post(self, request):
-        form = LoginForms(request.POST)
+        form = CustomLoginForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password')

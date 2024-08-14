@@ -98,13 +98,12 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         return self.email if self.email else self.phone_number
 
 
-class Customer(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+class Customer(CustomUser):
     first_name = models.CharField(max_length=255, blank=True, null=True)
     last_name = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
-        return self.user.email
+        return self.email
 
 
 class Address(models.Model):
