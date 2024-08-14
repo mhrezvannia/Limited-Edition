@@ -3,6 +3,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
 from django.views import View
+from django.views.generic import CreateView
+from accounts.forms import *
 from .forms import *
 from django.contrib.auth import authenticate, login
 
@@ -36,3 +38,15 @@ class CustomLogoutView(View):
     def get(self, request):
         logout(request)
         return redirect('website:index')
+
+
+class CustomerSignUpView(CreateView):
+    model = Customer
+    form_class = CustomerSignUpForm
+    template_name = 'register_customer.html'
+    success_url = reverse_lazy('accounts:login')
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return super().form_valid(form)

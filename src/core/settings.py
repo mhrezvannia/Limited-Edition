@@ -134,7 +134,6 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 
 
 AUTHENTICATION_BACKENDS = [
-    'accounts.backends.EmailOrPhoneBackend',  # بک‌اند سفارشی شما
-    'django.contrib.auth.backends.ModelBackend',  # بک‌اند پیش‌فرض
+    'accounts.backends.CustomBackend',
 ]
 

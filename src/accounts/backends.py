@@ -1,28 +1,23 @@
-# backends.py
 from django.contrib.auth.backends import BaseBackend
-from django.contrib.auth import get_user_model
+from .models import CustomUser
 
 
-class EmailOrPhoneBackend(BaseBackend):
+class CustomBackend(BaseBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
-        UserModel = get_user_model()
         try:
+            if '@' in username:
+                user = CustomUser.objects.get(email=username)
+            else:
+                user = CustomUser.objects.get(phone_number=username)
+        except CustomUser.DoesNotExist:
+            return None
 
-            user = UserModel.objects.get(email=username)
-        except UserModel.DoesNotExist:
-            try:
-
-                user = UserModel.objects.get(phone_number=username)
-            except UserModel.DoesNotExist:
-                return None
-
-        if user and user.check_password(password):
+        if user.check_password(password):
             return user
         return None
 
     def get_user(self, user_id):
-        UserModel = get_user_model()
         try:
-            return UserModel.objects.get(pk=user_id)
-        except UserModel.DoesNotExist:
+            return CustomUser.objects.get(pk=user_id)
+        except CustomUser.DoesNotExist:
             return None
