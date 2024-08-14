@@ -6,22 +6,42 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 
 
-class UserManager(BaseUserManager):
-    def create_user(self, email, password=None):
-        if not email:
-            raise ValueError('email field is required')
-        user = self.model(email=email)
+# class UserManager(BaseUserManager):
+#     def create_user(self, email, password=None):
+#         if not email:
+#             raise ValueError('email field is required')
+#         user = self.model(email=email)
+#         user.set_password(password)
+#         user.save(using=self._db)
+#         return user
+#
+#     def create_superuser(self, email, password):
+#         user = self.create_user(email=email, password=password)
+#         user.is_admin = True
+#         user.save(using=self._db)
+#         return user
+
+class CustomUserManager(BaseUserManager):
+    def create_user(self, email=None, phone_number=None, password=None, **extra_fields):
+        if not email and not phone_number:
+            raise ValueError('The Email or Phone number must be set')
+
+        if email:
+            email = self.normalize_email(email)
+            user = self.model(email=email, phone_number=phone_number, **extra_fields)
+        else:
+            user = self.model(phone_number=phone_number, **extra_fields)
+
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, password):
-        user = self.create_user(email=email, password=password)
-        user.is_admin = True
-        user.save(using=self._db)
-        return user
+    def create_superuser(self, email=None, phone_number=None, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+        return self.create_user(email, phone_number, password, **extra_fields)
 
-
+    
 class User(AbstractBaseUser):
     email = models.EmailField(unique=True, max_length=50)
     phone = models.CharField(max_length=50, unique=True)
