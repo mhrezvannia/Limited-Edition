@@ -49,7 +49,7 @@ class VendorOwnerSignUpForm(UserCreationForm):
 class VendorEmployeeForm(forms.ModelForm):
     class Meta:
         model = VendorEmployee
-        fields = ['user', 'role']
+        fields = ['vendor', 'role']
 
 
 class CustomLoginForm(AuthenticationForm):

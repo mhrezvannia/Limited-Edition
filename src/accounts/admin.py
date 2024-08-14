@@ -31,7 +31,7 @@ class CustomUserAdmin(BaseUserAdmin):
 
 class CustomerAdmin(admin.ModelAdmin):
     model = Customer
-    list_display = ('user', 'first_name', 'last_name')
+    list_display = ('first_name', 'last_name', 'email', 'phone_number', 'is_active', 'is_staff')
     search_fields = ('user__email', 'first_name', 'last_name')
 
 

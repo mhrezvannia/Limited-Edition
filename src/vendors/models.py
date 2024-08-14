@@ -24,7 +24,7 @@ class VendorEmployee(CustomUser):
     role = models.CharField(max_length=20, choices=ROLE_CHOICES)
 
     class Meta:
-        unique_together = ('phone_number', 'vendor', 'role')
+        unique_together = ('vendor', 'role')
 
     def __str__(self):
         return f"{self.email} {self.phone_number} - {self.role}"
