@@ -36,7 +36,9 @@ class CustomerSignUpForm(UserCreationForm):
 
 class VendorOwnerSignUpForm(UserCreationForm):
     vendor_name = forms.CharField(max_length=255)
-    vendor_address = AddressForm()
+    zip_code = forms.CharField(max_length=255, required=False)
+    detail = forms.CharField(widget=forms.Textarea, required=True)
+    city = forms.CharField(max_length=255, required=True)
 
     class Meta:
         model = CustomUser
@@ -46,10 +48,16 @@ class VendorOwnerSignUpForm(UserCreationForm):
         user = super().save(commit=False)
         if commit:
             user.save()
-            address = self.cleaned_data['vendor_address']
-            address.save()
-            vendor = Vendor.objects.create(
-                name=self.cleaned_data.get('vendor_name'),
+            # Create and save the Address instance
+            address = Address.objects.create(
+                zip_code=self.cleaned_data['zip_code'],
+                detail=self.cleaned_data['detail'],
+                city=self.cleaned_data['city'],
+                user=user
+            )
+            # Create and save the Vendor instance
+            Vendor.objects.create(
+                name=self.cleaned_data['vendor_name'],
                 address=address,
                 owner=user
             )
