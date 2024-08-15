@@ -63,7 +63,7 @@ class CustomLoginView(FormView):
         if hasattr(user, 'customer'):
             return redirect('website:index')
         elif VendorEmployee.objects.filter(pk=user.pk).exists():
-            pass
+            return redirect('website:index')
             # employee = VendorEmployee.objects.get(pk=user.pk)
             # return redirect('vendor_dashboard', vendor_id=employee.vendor.id)
         else:
