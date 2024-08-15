@@ -1,0 +1,21 @@
+{% extends 'website/base.html' %}
+
+{% block title %}Customer Dashboard{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Customer Profile</h2>
+    
+    <div class="profile-details">
+        <p><strong>First Name:</strong> {{ customer.first_name }}</p>
+        <p><strong>Last Name:</strong> {{ customer.last_name }}</p>
+        <p><strong>Email:</strong> {{ customer.email }}</p>
+        <p><strong>Phone Number:</strong> {{ customer.phone_number }}</p>
+    </div>
+    
+{#    <div class="profile-actions">#}
+{#        <a href="{% url 'profile_edit' %}" class="btn btn-primary">Edit Profile</a>#}
+{#        <a href="{% url 'change_password' %}" class="btn btn-secondary">Change Password</a>#}
+{#    </div>#}
+</div>
+{% endblock %}
