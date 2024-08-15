@@ -1,0 +1,32 @@
+from django import forms
+from .models import Product, Category, Rate, Comment, ProductPicture
+
+
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = '__all__'
+
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = '__all__'
+
+
+class RateForm(forms.ModelForm):
+    class Meta:
+        model = Rate
+        fields = '__all__'
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = '__all__'
+
+
+class ProductPictureForm(forms.ModelForm):
+    class Meta:
+        model = ProductPicture
+        fields = '__all__'
