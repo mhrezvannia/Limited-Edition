@@ -3,6 +3,8 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, DeleteView, UpdateView
 from .models import *
 
+class ContactView(TemplateView):
+    template_name = 'contact.html'
 
 class HomePageView(TemplateView):
     template_name = 'index.html'
