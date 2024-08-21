@@ -13,6 +13,7 @@ class ProductListView(ListView):
     template_name = 'shop.html'
     context_object_name = 'products'
     queryset = Product.objects.filter(is_active=True)
+    paginate_by = 9
 
 
 class ProductDetailView(DetailView):
@@ -45,6 +46,16 @@ class CategoryListView(ListView):
     template_name = 'categories/category_list.html'
     context_object_name = 'categories'
 
+class ShopProductCategoryListView(ListView):
+    model = Category
+    template_name = 'shop.html.html'
+    context_object_name = 'categories'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['parent_categories'] = Category.objects.filter(parent_category__isnull=True)
+        context['subcategories'] = Category.objects.filter(parent_category__isnull=False)
+        return context
 
 class CategoryDetailView(DetailView):
     model = Category

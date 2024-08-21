@@ -12,7 +12,8 @@ class Product(models.Model):
     discount_type = models.IntegerField(default=0)
     discount_value = models.FloatField(null=True, blank=True)
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
-    is_active = models.BooleanField(default=False)
+    main_image = models.ImageField(upload_to='product/main_images', null=True)
+    is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.title
