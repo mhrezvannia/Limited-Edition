@@ -1,10 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, DeleteView, UpdateView
 from .models import *
 
+
 class ContactView(TemplateView):
     template_name = 'contact.html'
+
 
 class HomePageView(TemplateView):
     template_name = 'index.html'
@@ -48,16 +50,6 @@ class CategoryListView(ListView):
     template_name = 'categories/category_list.html'
     context_object_name = 'categories'
 
-class ShopProductCategoryListView(ListView):
-    model = Category
-    template_name = 'shop.html.html'
-    context_object_name = 'categories'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['parent_categories'] = Category.objects.filter(parent_category__isnull=True)
-        context['subcategories'] = Category.objects.filter(parent_category__isnull=False)
-        return context
 
 class CategoryDetailView(DetailView):
     model = Category

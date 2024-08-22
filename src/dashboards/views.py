@@ -16,7 +16,7 @@ class CustomerDashboardView(LoginRequiredMixin, TemplateView):
 
 
 class VendorDashboardView(LoginRequiredMixin, TemplateView):
-    template_name = 'Dashboards-templates/index.html'
+    template_name = 'dashboards/index.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -24,6 +24,6 @@ class VendorDashboardView(LoginRequiredMixin, TemplateView):
 
         if hasattr(user, 'vendoremployee'):
             vendor = user.vendoremployee.vendor
-            context['vendor'] = vendor  # Add vendor information
+            context['vendor'] = vendor
 
         return context
