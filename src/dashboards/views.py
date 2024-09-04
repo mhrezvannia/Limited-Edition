@@ -16,7 +16,7 @@ class CustomerDashboardView(LoginRequiredMixin, TemplateView):
 
 
 class VendorDashboardView(LoginRequiredMixin, TemplateView):
-    template_name = 'dashboards/index.html'
+    template_name = 'dashboards/vendor_index.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
