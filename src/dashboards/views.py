@@ -97,3 +97,15 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
         # Set the vendor on the product form instance
         form.instance.vendor = vendor_employee.vendor
         return super().form_valid(form)
+
+
+class ProductListView(LoginRequiredMixin, ListView):
+    model = Product
+    template_name = 'dashboards/product_list.html'
+    context_object_name = 'products'
+
+    def get_queryset(self):
+        vendor_employee = get_object_or_404(VendorEmployee, customuser_ptr=self.request.user)
+        vendor_id = vendor_employee.vendor.id
+        return Product.objects.filter(vendor_id=vendor_id)
+
