@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import CreateView, FormView
+from django.views.generic import CreateView, FormView, UpdateView, DetailView
 from accounts.forms import *
 from .forms import *
 from django.contrib.auth import authenticate, login
@@ -55,19 +55,20 @@ class CustomerSignUpView(CreateView):
 class CustomLoginView(FormView):
     form_class = CustomLoginForm
     template_name = 'login.html'
+    success_url = reverse_lazy('website:index')
 
     def form_valid(self, form):
         user = form.get_user()
         login(self.request, user)
 
-        if hasattr(user, 'customer'):
-            return redirect('website:index')
-        elif VendorEmployee.objects.filter(pk=user.pk).exists():
-            return redirect('website:index')
-            # employee = VendorEmployee.objects.get(pk=user.pk)
-            # return redirect('vendor_dashboard', vendor_id=employee.vendor.id)
-        else:
-            return super().form_valid(form)
+        # if hasattr(user, 'customer'):
+        #     return redirect('website:index')
+        # elif VendorEmployee.objects.filter(pk=user.pk).exists():
+        #     return redirect('website:index')
+        #     # employee = VendorEmployee.objects.get(pk=user.pk)
+        #     # return redirect('vendor_dashboard', vendor_id=employee.vendor.id)
+        # else:
+        return super().form_valid(form)
 
 
 class OwnerSignUpView(CreateView):
@@ -78,3 +79,5 @@ class OwnerSignUpView(CreateView):
     def form_valid(self, form):
         form.save()
         return redirect('accounts:login')
+
+
