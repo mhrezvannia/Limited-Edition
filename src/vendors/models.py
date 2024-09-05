@@ -6,12 +6,14 @@ from accounts.models import CustomUser, Address
 
 class Vendor(models.Model):
     name = models.CharField(max_length=255)
-    address = models.ForeignKey(Address,related_name='addresses' ,on_delete=models.CASCADE)
+    address = models.CharField(max_length=350, blank=True, null=True)
     owner = models.ForeignKey(CustomUser, related_name='owned_vendors', on_delete=models.CASCADE, null=True)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
+
+
 
 
 class VendorEmployee(CustomUser):
