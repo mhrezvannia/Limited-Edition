@@ -1,7 +1,8 @@
 from django.views.generic import TemplateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404
-from accounts.forms import CustomerSignUpForm
+from .forms import CustomerEditForm
+from django.urls import reverse_lazy
 
 from accounts.models import Customer
 from vendors.models import *
@@ -27,7 +28,8 @@ class VendorDashboardView(LoginRequiredMixin, TemplateView):
 
 
 class CustomerEditView(LoginRequiredMixin, UpdateView):
-    template_name = 'dashboards/customer_edit.html'
     model = Customer
-    form_class = CustomerSignUpForm
-    fields = ['name', 'last_name',]
+    form_class = CustomerEditForm
+    success_url = reverse_lazy('customer_dashboard')
+    template_name = 'dashboards/customer_edit.html'
+
