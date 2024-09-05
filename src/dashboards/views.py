@@ -1,14 +1,15 @@
-from django.views.generic import TemplateView, UpdateView, ListView, CreateView
+from django.views.generic import TemplateView, UpdateView, ListView, CreateView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from .forms import CustomerEditForm
 from django.urls import reverse_lazy, reverse
 from accounts.forms import AddressForm
 
-
 from accounts.models import Customer, Address
 from vendors.models import *
 from website.models import *
+from vendors.models import *
+from vendors.forms import *
 
 
 class CustomerDashboardView(LoginRequiredMixin, TemplateView):
@@ -16,7 +17,7 @@ class CustomerDashboardView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['customer'] = get_object_or_404(Customer,id=self.request.user.id)
+        context['customer'] = get_object_or_404(Customer, id=self.request.user.id)
         return context
 
 
@@ -46,7 +47,7 @@ class CustomerAddressesView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['customer'] = get_object_or_404(Customer,id=self.request.user.id)
+        context['customer'] = get_object_or_404(Customer, id=self.request.user.id)
         return context
 
 
@@ -66,3 +67,8 @@ class CustomerAddressCreateView(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse('customer_addresses', kwargs={'pk': self.request.user.pk})
 
+
+class DashboardVendorDetailView(LoginRequiredMixin, DetailView):
+    model = Vendor
+    template_name = 'dashboards/vendor_detail.html'
+    context_object_name = 'vendor'

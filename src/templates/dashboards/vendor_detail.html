@@ -1,0 +1,117 @@
+{% extends "dashboards/vendor_dashboard_base.html" %}
+{% load static %}
+
+{% block content %}
+<body>
+<div class="wrapper">
+    <!-- Sidebar -->
+    <div class="sidebar" data-background-color="dark">
+        <div class="sidebar-logo">
+            <!-- Logo Header -->
+            <div class="logo-header" data-background-color="dark">
+                <a href="index.html" class="logo">
+                    <img
+                        src="{% static 'dashboards_statics/img/kaiadmin/logo_light.svg' %}"
+                        alt="navbar_brand"
+                        class="navbar-brand"
+                        height="20"
+                    />
+                </a>
+                <div class="nav-toggle">
+                    <button class="btn btn-toggle toggle-sidebar">
+                        <i class="gg-menu-right"></i>
+                    </button>
+                    <button class="btn btn-toggle sidenav-toggler">
+                        <i class="gg-menu-left"></i>
+                    </button>
+                </div>
+                <button class="topbar-toggler more">
+                    <i class="gg-more-vertical-alt"></i>
+                </button>
+            </div>
+            <!-- End Logo Header -->
+        </div>
+        <div class="sidebar-wrapper scrollbar scrollbar-inner">
+            <div class="sidebar-content">
+                <ul class="nav nav-secondary">
+                    <li class="nav-section">
+                        <span class="sidebar-mini-icon">
+                          <i class="fa fa-ellipsis-h"></i>
+                        </span>
+                        <h4 class="text-section"></h4>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-user-circle"></i>
+                            اطلاعات کاربری
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-box"></i>
+                            محصولات
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-users"></i>
+                            مدیریت کارمندان
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-shopping-cart"></i>
+                            سفارشات
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'dashboard_vendor_detail' pk=vendor.id %}" class="nav-link">
+                            <i class="fas fa-store"></i>
+                            اطلاعات فروشگاه
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-panel">
+        <div class="content">
+            <div class="container">
+                <!-- Vendor Details Section -->
+                <div class="card mt-4">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="card-title mb-0">Vendor Details</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <h5><strong>Name:</strong> {{ vendor.name }}</h5>
+                            </div>
+                            <div class="col-md-6">
+                                <h5><strong>Active Status:</strong> 
+                                    <span class="badge {% if vendor.is_active %}bg-success{% else %}bg-danger{% endif %}">
+                                        {{ vendor.is_active|yesno:"Active,Inactive" }}
+                                    </span>
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <h5><strong>Address:</strong> {{ vendor.address }}</h5>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <a href=# class="btn btn-warning me-2">Edit Vendor</a>
+                            <a href=# class="btn btn-secondary">Back to Vendors List</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Vendor Details Section -->
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+{% endblock %}
