@@ -1,7 +1,7 @@
 from django.views.generic import TemplateView, UpdateView, ListView, CreateView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
-from .forms import CustomerEditForm
+from dashboards.forms import CustomerEditForm, ProductCreateForm
 from django.urls import reverse_lazy, reverse
 from accounts.forms import AddressForm
 
@@ -27,6 +27,7 @@ class VendorDashboardView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['vendor'] = get_object_or_404(Vendor, owner_id=self.request.user.id)
+        context['employee'] = get_object_or_404(VendorEmployee, id=self.request.user.id)
         return context
 
 
@@ -72,3 +73,27 @@ class DashboardVendorDetailView(LoginRequiredMixin, DetailView):
     model = Vendor
     template_name = 'dashboards/vendor_detail.html'
     context_object_name = 'vendor'
+
+
+class DashboardVendorEmployeeDetailView(LoginRequiredMixin, DetailView):
+    model = VendorEmployee
+    template_name = 'dashboards/vendor_employee_detail.html'
+    context_object_name = 'employee'
+
+
+class ProductCreateView(LoginRequiredMixin, CreateView):
+    model = Product
+    fields = ['title', 'content', 'price', 'has_discount', 'discount_type',
+              'discount_value', 'main_image']  # 'vendor' removed
+    template_name = 'dashboards/product_create.html'
+    success_url = reverse_lazy('vendor_dashboard')
+
+    def form_valid(self, form):
+        user = self.request.user
+
+        # Get the VendorEmployee instance associated with the logged-in user
+        vendor_employee = get_object_or_404(VendorEmployee, customuser_ptr=self.request.user)
+
+        # Set the vendor on the product form instance
+        form.instance.vendor = vendor_employee.vendor
+        return super().form_valid(form)

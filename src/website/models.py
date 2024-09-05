@@ -9,10 +9,10 @@ class Product(models.Model):
     content = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=0)
     has_discount = models.BooleanField(default=False)
-    discount_type = models.IntegerField(default=0)
+    discount_type = models.IntegerField(default=0, blank=True, null=True)
     discount_value = models.FloatField(null=True, blank=True)
-    vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE)
-    main_image = models.ImageField(upload_to='product/main_images', null=True)
+    vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, null=True, blank=True)
+    main_image = models.ImageField(upload_to='product/main_images', null=True, blank=True)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):

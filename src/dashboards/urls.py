@@ -8,8 +8,10 @@ urlpatterns = [
     path('customer/<int:pk>/addresses/', CustomerAddressesView.as_view(), name='customer_addresses'),
     path('customer/<int:pk>/addresses/create/', CustomerAddressCreateView.as_view(), name='customer_create_address'),
     path('vendor/<int:pk>/', DashboardVendorDetailView.as_view(), name='dashboard_vendor_detail'),
+    path('vendor/product/create/', ProductCreateView.as_view(), name='product_create'),
     # path('employees/', VendorEmployeeListView.as_view(), name='employee-list'),
-    # path('employees/<int:pk>/', VendorEmployeeDetailView.as_view(), name='employee-detail'),
+    path('vendor/employees/<int:pk>/', DashboardVendorEmployeeDetailView.as_view(), name='employee-detail'),
+
     # path('employees/create/', VendorEmployeeCreateView.as_view(), name='employee-create'),
     # path('employees/<int:pk>/update/', VendorEmployeeUpdateView.as_view(), name='employee-update'),
     # path('employees/<int:pk>/delete/', VendorEmployeeDeleteView.as_view(), name='employee-delete'),

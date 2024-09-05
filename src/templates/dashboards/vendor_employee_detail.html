@@ -1,0 +1,84 @@
+{% extends 'dashboards/vendor_dashboard_base.html' %}
+{% load static %}
+
+{% block content %}
+<body>
+    <div class="wrapper">
+        <!-- Sidebar -->
+        <div class="sidebar" data-background-color="dark">
+            <div class="sidebar-logo">
+                <div class="logo-header" data-background-color="dark">
+                    <a href="{% url 'vendor_dashboard' %}" class="logo">
+                        <img src="{% static 'dashboards_statics/img/kaiadmin/logo_light.svg' %}" 
+                             alt="navbar_brand" class="navbar-brand" height="20"/>
+                    </a>
+                    <div class="nav-toggle">
+                        <button class="btn btn-toggle toggle-sidebar">
+                            <i class="gg-menu-right"></i>
+                        </button>
+                        <button class="btn btn-toggle sidenav-toggler">
+                            <i class="gg-menu-left"></i>
+                        </button>
+                    </div>
+                    <button class="topbar-toggler more">
+                        <i class="gg-more-vertical-alt"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="sidebar-wrapper scrollbar scrollbar-inner">
+                <div class="sidebar-content">
+                    <ul class="nav nav-secondary">
+                        <li class="nav-section">
+                            <span class="sidebar-mini-icon">
+                                <i class="fa fa-ellipsis-h"></i>
+                            </span>
+                            <h4 class="text-section"></h4>
+                        </li>
+                        <li class="nav-item">
+                            <a href=# class="nav-link">اطلاعات کاربری</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">محصولات</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">مدیریت_کارمندان</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">سفارشات</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'dashboard_vendor_detail' pk=object.vendor.id %}" class="nav-link">اطلاعات فروشگاه</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-panel">
+            <div class="content">
+                <div class="container">
+                    <h2>Employee Detail</h2>
+
+                    <div class="card mt-4">
+                        <div class="card-body">
+                            <h4 class="card-title">{{ object.name }}</h4>
+                            <p class="card-text"><strong>Email:</strong> {{ object.email }}</p>
+                            <p class="card-text"><strong>Phone:</strong> {{ object.phone }}</p>
+                            <p class="card-text"><strong>Role:</strong> {{ object.get_role_display }}</p>
+                            <p class="card-text"><strong>Vendor:</strong> {{ object.vendor.name }}</p>
+                            <p class="card-text"><strong>Date Joined:</strong> {{ object.date_joined|date:"F j, Y" }}</p>
+                            <p class="card-text"><strong>Status:</strong> {{ object.is_active|yesno:"Active,Inactive" }}</p>
+                        </div>
+                    </div>
+
+                    <div class="profile-actions mt-3">
+                        <a href=# class="btn btn-primary">Back to Employees</a>
+                        <a href=# class="btn btn-warning">Edit</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+{% endblock %}
