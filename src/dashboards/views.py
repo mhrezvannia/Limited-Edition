@@ -1,3 +1,4 @@
+from django.http import HttpResponseNotFound
 from django.views.generic import TemplateView, UpdateView, ListView, CreateView, DetailView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
@@ -22,7 +23,7 @@ class CustomerDashboardView(LoginRequiredMixin, TemplateView):
 
 
 class VendorDashboardView(LoginRequiredMixin, TemplateView):
-    template_name = 'dashboards/../templates/vendor/vendor_index.html'
+    template_name = 'vendor/vendor_index.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -34,13 +35,16 @@ class VendorDashboardView(LoginRequiredMixin, TemplateView):
 class CustomerEditView(LoginRequiredMixin, UpdateView):
     model = Customer
     form_class = CustomerEditForm
-    success_url = reverse_lazy('customer_dashboard')
+    success_url = reverse_lazy('dashboards:customer_dashboard')
     template_name = 'customer/customer_edit.html'
+
+    def get_object(self):
+        return self.request.user.customer
 
 
 class CustomerAddressesView(LoginRequiredMixin, ListView):
     model = Address
-    template_name = 'dashboards/../templates/customer/customer_addresses.html'
+    template_name = 'customer/customer_addresses.html'
     context_object_name = 'addresses'
 
     def get_queryset(self):
@@ -48,25 +52,52 @@ class CustomerAddressesView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['customer'] = get_object_or_404(Customer, id=self.request.user.id)
+        context['customer'] = self.request.user.customer
         return context
 
 
 class CustomerAddressCreateView(LoginRequiredMixin, CreateView):
     model = Address
     form_class = AddressForm
-    template_name = 'dashboards/../templates/customer/customer_create_address.html'
+    template_name = 'customer/customer_create_address.html'
 
     def form_valid(self, form):
         try:
-            customer = Customer.objects.get(pk=self.request.user.pk)
+            customer = self.request.user.customer
             form.instance.user = customer
         except Customer.DoesNotExist:
             return redirect('error_page')
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('customer_addresses', kwargs={'pk': self.request.user.pk})
+        return reverse('dashboards:customer_addresses')
+
+
+class AddressDeleteView(LoginRequiredMixin, DeleteView):
+    model = Address
+    template_name = 'customer/customer_confirm_delete.html'
+
+    def get_object(self):
+        address_id = self.request.POST.get('address_id')
+        return Address.objects.get(pk=address_id, user=self.request.user)
+
+    def get_success_url(self):
+        return reverse('dashboards:customer_addresses')
+
+class AddressEditView(LoginRequiredMixin, UpdateView):
+    model = Address
+    form_class = AddressForm
+    template_name = 'customer/customer_edit_address.html'
+
+    def get_object(self, queryset=None):
+        address_id = self.request.GET.get('address_id')  # Retrieve address_id from GET parameters
+        if address_id:
+            return get_object_or_404(Address, pk=address_id, user=self.request.user)
+        return redirect('error_page')  # Handle cases where address_id is missing
+
+    def get_success_url(self):
+        return reverse('dashboards:customer_addresses')
+
 
 
 class DashboardVendorDetailView(LoginRequiredMixin, DetailView):
