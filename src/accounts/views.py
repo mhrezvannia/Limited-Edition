@@ -43,7 +43,7 @@ class CustomLogoutView(View):
 class CustomerSignUpView(CreateView):
     model = Customer
     form_class = CustomerSignUpForm
-    template_name = 'register_customer.html'
+    template_name = 'accounts/register_customer.html'
     success_url = reverse_lazy('accounts:login')
 
     def form_valid(self, form):
@@ -54,7 +54,7 @@ class CustomerSignUpView(CreateView):
 
 class CustomLoginView(FormView):
     form_class = CustomLoginForm
-    template_name = 'login.html'
+    template_name = 'accounts/login.html'
     success_url = reverse_lazy('website:index')
 
     def form_valid(self, form):
@@ -73,7 +73,7 @@ class CustomLoginView(FormView):
 
 class OwnerSignUpView(CreateView):
     form_class = VendorOwnerSignUpForm
-    template_name = 'vendor_register.html'
+    template_name = 'accounts/vendor_register.html'
     success_url = reverse_lazy('accounts:login')
 
     def form_valid(self, form):

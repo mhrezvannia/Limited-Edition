@@ -1,4 +1,4 @@
-{% extends 'dashboards/vendor_dashboard_base.html' %}
+{% extends 'dashboards/../vendor_dashboard_base.html' %}
 {% load static %}
 
 {% block content %}
@@ -8,7 +8,7 @@
         <div class="sidebar" data-background-color="dark">
             <div class="sidebar-logo">
                 <div class="logo-header" data-background-color="dark">
-                    <a href="{% url 'vendor_dashboard' %}" class="logo">
+                    <a href="{% url 'dashboards:vendor_dashboard' %}" class="logo">
                         <img src="{% static 'dashboards_statics/img/kaiadmin/logo_light.svg' %}" 
                              alt="navbar_brand" class="navbar-brand" height="20"/>
                     </a>
@@ -47,7 +47,7 @@
                             <a href="#" class="nav-link">سفارشات</a>
                         </li>
                         <li class="nav-item">
-                            <a href="{% url 'dashboard_vendor_detail' pk=object.vendor.id %}" class="nav-link">اطلاعات فروشگاه</a>
+                            <a href="{% url 'dashboards:dashboard_vendor_detail' pk=object.vendor.id %}" class="nav-link">اطلاعات فروشگاه</a>
                         </li>
                     </ul>
                 </div>
@@ -64,10 +64,9 @@
                         <div class="card-body">
                             <h4 class="card-title">{{ object.name }}</h4>
                             <p class="card-text"><strong>Email:</strong> {{ object.email }}</p>
-                            <p class="card-text"><strong>Phone:</strong> {{ object.phone }}</p>
+                            <p class="card-text"><strong>Phone:</strong> {{ object.phone_number }}</p>
                             <p class="card-text"><strong>Role:</strong> {{ object.get_role_display }}</p>
                             <p class="card-text"><strong>Vendor:</strong> {{ object.vendor.name }}</p>
-                            <p class="card-text"><strong>Date Joined:</strong> {{ object.date_joined|date:"F j, Y" }}</p>
                             <p class="card-text"><strong>Status:</strong> {{ object.is_active|yesno:"Active,Inactive" }}</p>
                         </div>
                     </div>

@@ -14,8 +14,6 @@ class Vendor(models.Model):
         return self.name
 
 
-
-
 class VendorEmployee(CustomUser):
     ROLE_CHOICES = (
         ('owner', 'Owner'),
@@ -25,7 +23,6 @@ class VendorEmployee(CustomUser):
 
     vendor = models.ForeignKey(Vendor, related_name='employees', on_delete=models.CASCADE, null=True)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES)
-
 
     def __str__(self):
         return f"{self.email} {self.phone_number} - {self.role}"

@@ -47,7 +47,7 @@
         </a></li>
     </ul>
     <div class="offcanvas__logo">
-        <a href="./index.html"><img src={% static "img/logo.png" %} alt=""></a>
+        <a href="website/index.html"><img src={% static "img/logo.png" %} alt=""></a>
     </div>
     <div id="mobile-menu-wrap"></div>
     <div class="offcanvas__auth">
@@ -62,7 +62,7 @@
         <div class="row">
             <div class="col-xl-3 col-lg-2">
                 <div class="header__logo">
-                    <a href="./index.html"><img src={% static "img/logo.png" %} alt=""></a>
+                    <a href="website/index.html"><img src={% static "img/logo.png" %} alt=""></a>
                 </div>
             </div>
             <div class="col-xl-6 col-lg-7">
@@ -81,7 +81,7 @@
                 <div class="header__right">
                     <div class="header__right__auth">
                         {% if request.user.is_authenticated %}
-                            <a href="{% url 'customer_dashboard' %}">{{ request.user.email }}</a>
+                            <a href="{% url 'dashboards:customer_dashboard' %}">{{ request.user.email }}</a>
                             <a href=" {% url 'accounts:logout' %}">خروج</a>
                         {% else %}
                             <a href="{% url 'accounts:login' %}">ورود</a>
@@ -112,7 +112,7 @@
             <div class="col-lg-4 col-md-6 col-sm-7">
                 <div class="footer__about">
                     <div class="footer__logo">
-                        <a href="./index.html"><img src={% static "img/logo.png" %} alt=""></a>
+                        <a href="website/index.html"><img src={% static "img/logo.png" %} alt=""></a>
                     </div>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
                         cilisis.</p>

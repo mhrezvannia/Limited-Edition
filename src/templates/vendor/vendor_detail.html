@@ -1,4 +1,4 @@
-{% extends "dashboards/vendor_dashboard_base.html" %}
+{% extends "dashboards/../vendor_dashboard_base.html" %}
 {% load static %}
 
 {% block content %}
@@ -41,7 +41,7 @@
                         <h4 class="text-section"></h4>
                     </li>
                     <li class="nav-item">
-                        <a href="{% url 'employee-detail' pk=object.id %}" class="nav-link">
+                        <a href="{% url 'dashboards:employee-detail' pk=object.id %}" class="nav-link">
                             <i class="fas fa-user-circle"></i>
                             اطلاعات کاربری
                         </a>
@@ -65,7 +65,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{% url 'dashboard_vendor_detail' pk=vendor.id %}" class="nav-link">
+                        <a href="{% url 'dashboards:dashboard_vendor_detail' pk=vendor.id %}" class="nav-link">
                             <i class="fas fa-store"></i>
                             اطلاعات فروشگاه
                         </a>
@@ -99,7 +99,7 @@
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-12">
-                                <h5><strong>Address:</strong> {{ vendor.address }}</h5>
+                                <h5><strong>Address:</strong> {{ vendor.address.title }}</h5>
                             </div>
                         </div>
                         <div class="d-flex justify-content-end">

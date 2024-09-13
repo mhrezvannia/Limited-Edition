@@ -1,4 +1,4 @@
-{% extends 'dashboards/customer_dashboard_base.html' %}
+{% extends 'dashboards/../customer_dashboard_base.html' %}
 {% load static %}
 
 {% block content %}
@@ -43,7 +43,7 @@
                     <li class="nav-item">
                         <a data-bs-toggle="collapse" href="#base">
                             <i class="fas fa-layer-group"></i>
-                            <a href="{% url 'customer_dashboard' %}" class="nav-link">اطلاعات کاربری</a>
+                            <a href="{% url 'dashboards:customer_dashboard' %}" class="nav-link">اطلاعات کاربری</a>
                             <span class="caret"></span>
                         </a>
                     </li>

@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import *
 
+app_name = 'dashboards'
 urlpatterns = [
     path('customer/', CustomerDashboardView.as_view(), name='customer_dashboard'),
     path('vendor/', VendorDashboardView.as_view(), name='vendor_dashboard'),
@@ -9,12 +10,12 @@ urlpatterns = [
     path('customer/<int:pk>/addresses/create/', CustomerAddressCreateView.as_view(), name='customer_create_address'),
     path('vendor/<int:pk>/', DashboardVendorDetailView.as_view(), name='dashboard_vendor_detail'),
     path('vendor/product/create/', ProductCreateView.as_view(), name='product_create'),
-    path('vendor/product/list/', ProductListView.as_view(), name='product_list'),
-    # path('employees/', VendorEmployeeListView.as_view(), name='employee-list'),
+    path('vendor/product/', ProductListView.as_view(), name='product_list'),
+    path('vendor/<int:pk>/employees/', VendorEmployeeListView.as_view(), name='vendor_employee_list'),
     path('vendor/employees/<int:pk>/', DashboardVendorEmployeeDetailView.as_view(), name='employee-detail'),
-
-    # path('employees/create/', VendorEmployeeCreateView.as_view(), name='employee-create'),
-    # path('employees/<int:pk>/update/', VendorEmployeeUpdateView.as_view(), name='employee-update'),
-    # path('employees/<int:pk>/delete/', VendorEmployeeDeleteView.as_view(), name='employee-delete'),
+    path('vendor/employee/create/', VendorEmployeeCreateView.as_view(), name='vendor_employee_create'),
+    path('dashboards/vendor/<pk>/employees/<employee_pk>/update/', VendorEmployeeUpdateView.as_view(),
+         name='vendor_employee_update'),
+    # path('vendor-employee/<int:pk>/delete/', VendorEmployeeDeleteView.as_view(), name='vendor_employee_delete'),
 
 ]

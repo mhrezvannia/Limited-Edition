@@ -1,0 +1,13 @@
+{% extends 'dashboards/../vendor_dashboard_base.html' %}
+{% load static %}
+
+{% block content %}
+    <h1>Update Vendor Employee</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Update</button>
+        <a href="{% url 'dashboards:vendor_employee_list' object.vendor.pk %}">Cancel</a>
+    </form> 
+{% endblock %}

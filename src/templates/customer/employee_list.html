@@ -1,0 +1,36 @@
+{% extends 'dashboards/../vendor_dashboard_base.html' %}
+{% load static %}
+
+{% block content %}
+<h2>Employees of Vendor: {{ view.get_queryset.first.vendor.name }}</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+            <th>Role</th>
+            <th>Edit</th> <!-- Add a new column for the Edit button -->
+        </tr>
+    </thead>
+    <tbody>
+        {% for employee in employees %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ employee.email }}</td>
+            <td>{{ employee.phone_number }}</td>
+            <td>{{ employee.get_role_display }}</td> <!-- Use get_role_display to show the role name -->
+            <td>
+{#                <a href="{% url 'dashboards:vendor_employee_update' pk=vendor_pk employee_pk=employee.id %}">Edit</a>#}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">No employees found for this vendor.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

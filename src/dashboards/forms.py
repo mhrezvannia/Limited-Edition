@@ -1,7 +1,7 @@
 from django import forms
 from accounts.models import Customer
 from website.models import Product
-
+from vendors.models import VendorEmployee
 
 
 class CustomerEditForm(forms.ModelForm):
@@ -15,3 +15,9 @@ class ProductCreateForm(forms.ModelForm):
         model = Product
         fields = ['title', 'content', 'price', 'has_discount', 'discount_type',
                   'discount_value', 'vendor', 'main_image']
+
+
+class VendorEmployeeForm(forms.ModelForm):
+    class Meta:
+        model = VendorEmployee
+        fields = ('vendor', 'role', 'email', 'phone_number')

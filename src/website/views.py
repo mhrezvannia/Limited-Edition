@@ -5,16 +5,16 @@ from .models import *
 
 
 class ContactView(TemplateView):
-    template_name = 'contact.html'
+    template_name = 'website/contact.html'
 
 
 class HomePageView(TemplateView):
-    template_name = 'index.html'
+    template_name = 'website/index.html'
 
 
 class ProductListView(ListView):
     model = Product
-    template_name = 'shop.html'
+    template_name = 'website/shop.html'
     context_object_name = 'products'
     queryset = Product.objects.filter(is_active=True)
     paginate_by = 9
@@ -22,7 +22,7 @@ class ProductListView(ListView):
 
 class ProductDetailView(DetailView):
     model = Product
-    template_name = 'product-details.html'
+    template_name = 'website/product-details.html'
     context_object_name = 'product'
 
 
