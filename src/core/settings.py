@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'orders.apps.OrdersConfig',
     'vendors.apps.VendorsConfig',
     'dashboards.apps.DashboardsConfig',
-    'rest_framework'
+    'rest_framework',
+    'easy_thumbnails',
 ]
 
 MIDDLEWARE = [
@@ -166,4 +167,12 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
+}
+
+
+THUMBNAIL_ALIASES = {
+    '': {
+        '400x400': {'size': (600, 600), 'crop': True},
+        '800x800': {'size': (800, 800), 'crop': True},
+    },
 }

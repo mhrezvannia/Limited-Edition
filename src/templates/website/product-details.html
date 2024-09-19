@@ -1,5 +1,5 @@
 
-{% extends 'website/base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 
 {% block content %}
@@ -85,24 +85,6 @@
                                             In Stock
                                             <input type="checkbox" id="stockin" {% if product.is_active %}checked{% endif %} disabled>
                                             <span class="checkmark"></span>
-                                        </label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <span>Available color:</span>
-                                    <div class="color__checkbox">
-                                        <!-- Static for now, you can make it dynamic if you have colors -->
-                                        <label for="red">
-                                            <input type="radio" name="color__radio" id="red" checked>
-                                            <span class="checkmark"></span>
-                                        </label>
-                                        <label for="black">
-                                            <input type="radio" name="color__radio" id="black">
-                                            <span class="checkmark black-bg"></span>
-                                        </label>
-                                        <label for="grey">
-                                            <input type="radio" name="color__radio" id="grey">
-                                            <span class="checkmark grey-bg"></span>
                                         </label>
                                     </div>
                                 </li>

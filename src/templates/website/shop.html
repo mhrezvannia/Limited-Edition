@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load thumbnail %}
 
 {% block content %}
     <div class="breadcrumb-option">
@@ -7,7 +8,7 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="breadcrumb__links">
-                        <a href="index.html"><i class="fa fa-home"></i> Home</a>
+                        <a href="{% url 'website:index' %}"><i class="fa fa-home"></i> Home</a>
                         <span>Shop</span>
                     </div>
                 </div>
@@ -70,136 +71,74 @@
                 <div class="col-lg-9 col-md-9">
                     <div class="row">
                         {% for product in products %}
-                            <div class="col-lg-4 col-md-6">
+                            <div class="col-lg-4 col-md-6 mb-4">
                                 <div class="product__item">
-                                    <div class="product__item__pic set-bg" data-setbg="{{ product.main_image }}">
-                                        <div class="label new">New</div>
+                                    <div class="product__item__pic">
+                                        {% if product.main_image %}
+                                            <img src="{{ product.main_image|thumbnail_url:'400x400' }}" class="img-fluid" alt="{{ product.title }}">
+                                        {% else %}
+                                            <img src="{% static 'images/placeholder.png' %}" class="img-fluid" alt="Product Image">
+                                        {% endif %}
+                                        {% if product.has_discount %}
+                                            <div class="label discount">Discount</div>
+                                        {% else %}
+                                            <div class="label new">New</div>
+                                        {% endif %}
                                         <ul class="product__hover">
-                                            <li><a href="{{ product.main_image }}" class="image-popup"><span class="arrow_expand"></span></a></li>
+                                            <li><a href="{{ product.main_image|thumbnail_url:'800x800' }}" class="image-popup"><span class="arrow_expand"></span></a></li>
                                             <li><a href="#"><span class="icon_bag_alt"></span></a></li>
                                         </ul>
                                     </div>
                                     <div class="product__item__text">
-                                        <h6><a href="{% url 'website:product_detail' product.id %}">{{ product.title }}</a></h6>
-
-                                        <div class="rating">
-                                            <!-- Add rating stars here if needed -->
+                                        <h6 style="font-size: 1.1rem; font-weight: 600;">
+                                            <a href="{% url 'website:product_detail' product.id %}" style="color: #333;">{{ product.title }}</a>
+                                        </h6>
+                                        <h6 style="font-size: 0.9rem; color: #888;">
+                                            Sold by: <a href="{% url 'website:product_detail' product.id %}" style="color: #888;">{{ product.vendor }}</a>
+                                        </h6>
+                                        <div class="product__price">
+                                            {% if product.has_discount %}
+                                                <span style="color: #888; text-decoration: line-through; font-size: 0.9rem;">${{ product.price|floatformat:2 }}</span>
+                                                <span style="color: #ff4747; font-size: 1.1rem;"> ${{ product.final_price|floatformat:2 }}</span>
+                                            {% else %}
+                                                <span style="color: #333; font-size: 1.1rem;">${{ product.price|floatformat:2 }}</span>
+                                            {% endif %}
                                         </div>
-                                        <div class="product__price">${{ product.price }}</div>
                                     </div>
                                 </div>
                             </div>
+                        {% empty %}
+                            <p>No products available.</p>
                         {% endfor %}
                     </div>
-                        <div class="col-lg-12 text-center">
-                            <div class="pagination__option">
-                                {% if products.has_previous %}
-                                    <a href="?page=1">&laquo;</a>
-                                    <a href="?page={{ products.previous_page_number }}">&lsaquo;</a>
-                                {% endif %}
 
-                                {% for num in products.paginator.page_range %}
-                                    {% if products.number == num %}
-                                        <a class="active">{{ num }}</a>
-                                    {% elif num > products.number|add:'-3' and num < products.number|add:'3' %}
-                                        <a href="?page={{ num }}">{{ num }}</a>
-                                    {% endif %}
-                                {% endfor %}
+                    <!-- Pagination -->
+                    <div class="col-lg-12 text-center">
+                        <div class="pagination__option">
+                            {% if products.has_previous %}
+                                <a href="?page=1">&laquo;</a>
+                                <a href="?page={{ products.previous_page_number }}">&lsaquo;</a>
+                            {% endif %}
 
-                                {% if products.has_next %}
-                                    <a href="?page={{ products.next_page_number }}">&rsaquo;</a>
-                                    <a href="?page={{ products.paginator.num_pages }}">&raquo;</a>
+                            {% for num in products.paginator.page_range %}
+                                {% if products.number == num %}
+                                    <a class="active">{{ num }}</a>
+                                {% elif num > products.number|add:'-3' and num < products.number|add:'3' %}
+                                    <a href="?page={{ num }}">{{ num }}</a>
                                 {% endif %}
-                            </div>
+                            {% endfor %}
+
+                            {% if products.has_next %}
+                                <a href="?page={{ products.next_page_number }}">&rsaquo;</a>
+                                <a href="?page={{ products.paginator.num_pages }}">&raquo;</a>
+                            {% endif %}
                         </div>
                     </div>
+                    <!-- Pagination End -->
                 </div>
             </div>
         </div>
     </section>
     <!-- Shop Section End -->
 
-    <!-- Instagram Begin -->
-    <div class="instagram">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg={% static "img//instagram/insta-1.jpg" %}>
-                        <div class="instagram__text">
-                            <i class="fa fa-instagram"></i>
-                            <a href="#">@ ashion_shop</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg={% static "img//instagram/insta-2.jpg" %}>
-                        <div class="instagram__text">
-                            <i class="fa fa-instagram"></i>
-                            <a href="#">@ ashion_shop</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg={% static "img//instagram/insta-3.jpg" %}>
-                        <div class="instagram__text">
-                            <i class="fa fa-instagram"></i>
-                            <a href="#">@ ashion_shop</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg={% static "img//instagram/insta-4.jpg" %}>
-                        <div class="instagram__text">
-                            <i class="fa fa-instagram"></i>
-                            <a href="#">@ ashion_shop</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg={% static "img//instagram/insta-5.jpg" %}>
-                        <div class="instagram__text">
-                            <i class="fa fa-instagram"></i>
-                            <a href="#">@ ashion_shop</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg={% static "img//instagram/insta-6.jpg" %}>
-                        <div class="instagram__text">
-                            <i class="fa fa-instagram"></i>
-                            <a href="#">@ ashion_shop</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Instagram End -->
-
-
-    <!-- Search Begin -->
-    <div class="search-model">
-        <div class="h-100 d-flex align-items-center justify-content-center">
-            <div class="search-close-switch">+</div>
-            <form class="search-model-form">
-                <input type="text" id="search-input" placeholder="Search here.....">
-            </form>
-        </div>
-    </div>
-    <!-- Search End -->
-
-    <!-- Js Plugins -->
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.magnific-popup.min.js"></script>
-    <script src="js/jquery-ui.min.js"></script>
-    <script src="js/mixitup.min.js"></script>
-    <script src="js/jquery.countdown.min.js"></script>
-    <script src="js/jquery.slicknav.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/jquery.nicescroll.min.js"></script>
-    <script src="js/main.js"></script>
-</body>
-
-</html>
 {% endblock %}
