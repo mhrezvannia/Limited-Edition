@@ -2,7 +2,7 @@ from django.http import HttpResponseNotFound
 from django.views.generic import TemplateView, UpdateView, ListView, CreateView, DetailView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
-from dashboards.forms import CustomerEditForm, ProductCreateForm
+from dashboards.forms import CustomerEditForm, ProductCreateForm, VendorEditForm
 from django.urls import reverse_lazy, reverse
 from accounts.forms import AddressForm
 
@@ -30,6 +30,18 @@ class VendorDashboardView(LoginRequiredMixin, TemplateView):
         context['vendor'] = get_object_or_404(Vendor, owner_id=self.request.user.id)
         context['employee'] = get_object_or_404(VendorEmployee, customuser_ptr=self.request.user)
         return context
+
+
+class VendorEditView(LoginRequiredMixin, UpdateView):
+    model = Vendor
+    form_class = VendorEditForm
+    success_url = reverse_lazy('dashboards:vendor_dashboard')
+    template_name = 'vendor/vendor_update.html'
+
+    def get_object(self):
+        vendor_employee = get_object_or_404(VendorEmployee, id=self.request.user.id)
+        vendor = get_object_or_404(Vendor, id=vendor_employee.vendor_id)
+        return vendor
 
 
 class CustomerEditView(LoginRequiredMixin, UpdateView):
@@ -84,6 +96,7 @@ class AddressDeleteView(LoginRequiredMixin, DeleteView):
     def get_success_url(self):
         return reverse('dashboards:customer_addresses')
 
+
 class AddressEditView(LoginRequiredMixin, UpdateView):
     model = Address
     form_class = AddressForm
@@ -99,11 +112,16 @@ class AddressEditView(LoginRequiredMixin, UpdateView):
         return reverse('dashboards:customer_addresses')
 
 
-
 class DashboardVendorDetailView(LoginRequiredMixin, DetailView):
     model = Vendor
-    template_name = 'dashboards/../templates/vendor/vendor_detail.html'
+    template_name = 'vendor/vendor_detail.html'
     context_object_name = 'vendor'
+
+    def get_object(self):
+        if hasattr(self.request.user, 'vendoremployee'):
+            vendor_employee = self.request.user.vendoremployee
+            return get_object_or_404(Vendor, pk=vendor_employee.vendor.pk)
+        return get_object_or_404(Vendor, owner=self.request.user)
 
 
 class VendorEmployeeListView(LoginRequiredMixin, ListView):

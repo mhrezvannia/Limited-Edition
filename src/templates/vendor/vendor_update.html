@@ -1,0 +1,23 @@
+{% extends 'vendor_base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="wrapper">
+    <!-- Main Content -->
+    <div class="main-panel">
+        <div class="content">
+            <div class="container">
+                <h2>ویرایش اطلاعات فروشگاه</h2>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <!-- Hidden field to pass address_id -->
+                    <input type="hidden" name="address_id" value="{{ form.instance.pk }}">
+                    {{ form.as_p }} <!-- Displays the form with current address data -->
+                    <input type="submit" value="Update" class="btn btn-primary">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

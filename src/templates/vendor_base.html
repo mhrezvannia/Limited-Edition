@@ -87,10 +87,28 @@
                 </span>
                 <h4 class="text-section">عملیات مشتری</h4>
               </li>
-                                <li class="nav-item active">
-                  <a href="{% url 'dashboards:customer_dashboard' %}">
+                <li class="nav-item active">
+                  <a href="{% url 'dashboards:customer_addresses' %}">
                     <i class="fas fa-home"></i>
-                    <p>ویرایش اطلاعات کاربری</p>
+                    <p>سفارش ها</p>
+                  </a>
+                </li>
+                <li class="nav-item active">
+                  <a href="{% url 'dashboards:customer_addresses' %}">
+                    <i class="fas fa-home"></i>
+                    <p>امتیاز ها</p>
+                  </a>
+                </li>
+                <li class="nav-item active">
+                  <a href="{% url 'dashboards:customer_addresses' %}">
+                    <i class="fas fa-home"></i>
+                    <p>نظرات</p>
+                  </a>
+                </li>
+                <li class="nav-item active">
+                  <a href="{% url 'dashboards:customer_addresses' %}">
+                    <i class="fas fa-home"></i>
+                    <p>آدرس ها</p>
                   </a>
                 </li>
               <li class="nav-item">
@@ -161,49 +179,28 @@
                     href="#"
                     aria-expanded="false"
                   >
-                    <div class="avatar-sm">
-                      <img
-                        src="{% static 'dashboards_statics/img/profile.jpg' %}"
-                        alt="..."
-                        class="avatar-img rounded-circle"
-                      />
-                    </div>
                     <span class="profile-username">
-                      <span class="op-7">Hi,</span>
-                      <span class="fw-bold">Hizrian</span>
+                      <span class="fw-bold">{{ request.user.email }}</span>
                     </span>
                   </a>
                   <ul class="dropdown-menu dropdown-user animated fadeIn">
                     <div class="dropdown-user-scroll scrollbar-outer">
                       <li>
                         <div class="user-box">
-                          <div class="avatar-lg">
-                            <img
-                              src="{% static 'dashboards_statics/img/profile.jpg' %}"
-                              alt="image profile"
-                              class="avatar-img rounded"
-                            />
-                          </div>
                           <div class="u-text">
-                            <h4>Hizrian</h4>
-                            <p class="text-muted">hello@example.com</p>
-                            <a
-                              href="profile.html"
-                              class="btn btn-xs btn-secondary btn-sm"
-                              >View Profile</a
-                            >
+                            <h4>{{ request.user.email }}</h4>
                           </div>
                         </div>
                       </li>
                       <li>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">My Profile</a>
-                        <a class="dropdown-item" href="#">My Balance</a>
-                        <a class="dropdown-item" href="#">Inbox</a>
+                        <a class="dropdown-item" href="{% url 'website:product_list' %}">فروشگاه</a>
+                        <a class="dropdown-item" href="{% url 'website:index' %}">خانه</a>
+                        <a class="dropdown-item" href="#">سبد خرید</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Account Setting</a>
+                        <a class="dropdown-item" href="{% url 'dashboards:customer_edit' %}">ویرایش اطلاعات</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Logout</a>
+                        <a class="dropdown-item" href="{% url 'accounts:logout' %}">خروج</a>
                       </li>
                     </div>
                   </ul>
@@ -220,34 +217,7 @@
             {% endblock %}
           </div>
         </div>
-
-        <footer class="footer">
-          <div class="container-fluid d-flex justify-content-between">
-            <nav class="pull-left">
-              <ul class="nav">
-                <li class="nav-item">
-                  <a class="nav-link" href="http://www.themekita.com">
-                    ThemeKita
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#"> Help </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#"> Licenses </a>
-                </li>
-              </ul>
-            </nav>
-            <div class="copyright">
-              2024, made with <i class="fa fa-heart heart text-danger"></i> by
-              <a href="http://www.themekita.com">ThemeKita</a>
-            </div>
-            <div>
-              Distributed by
-              <a target="_blank" href="https://themewagon.com/">ThemeWagon</a>.
-            </div>
-          </div>
-        </footer>
+      
       </div>
     </div>
     <!--   Core JS Files   -->
