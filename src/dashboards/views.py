@@ -175,30 +175,47 @@ class DashboardVendorEmployeeDetailView(LoginRequiredMixin, DetailView):
     context_object_name = 'employee'
 
 
-class ProductCreateView(LoginRequiredMixin, CreateView):
+class ProductCreateView(CreateView):
     model = Product
-    fields = ['title', 'content', 'price', 'has_discount', 'discount_type',
-              'discount_value', 'main_image']  # 'vendor' removed
-    template_name = 'dashboards/../templates/vendor/product_create.html'
-    success_url = reverse_lazy('vendor_dashboard')
+    form_class = ProductCreateForm
+    template_name = 'vendor/product_create.html'
+    success_url = reverse_lazy('dashboards:product_list')
 
     def form_valid(self, form):
         user = self.request.user
-
-        # Get the VendorEmployee instance associated with the logged-in user
-        vendor_employee = get_object_or_404(VendorEmployee, customuser_ptr=self.request.user)
-
-        # Set the vendor on the product form instance
+        vendor_employee = get_object_or_404(VendorEmployee, customuser_ptr=user)
         form.instance.vendor = vendor_employee.vendor
         return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        user = self.request.user
+        vendor_employee = get_object_or_404(VendorEmployee, customuser_ptr=user)
+        context = super().get_context_data(**kwargs)
+        context['vendor'] = vendor_employee.vendor
+        return context
 
 
 class ProductListView(LoginRequiredMixin, ListView):
     model = Product
-    template_name = 'dashboards/../templates/vendor/product_list.html'
+    template_name = 'vendor/product_list.html'
     context_object_name = 'products'
+    paginate_by = 12
 
     def get_queryset(self):
-        vendor_employee = get_object_or_404(VendorEmployee, customuser_ptr=self.request.user)
-        vendor_id = vendor_employee.vendor.id
-        return Product.objects.filter(vendor_id=vendor_id, is_active=True)
+        user = self.request.user
+        vendor_employee = get_object_or_404(VendorEmployee, customuser_ptr=user)
+        vendor = vendor_employee.vendor
+        return Product.objects.filter(vendor=vendor, is_active=True)
+
+
+class ProductDeleteView(DeleteView):
+    model = Product
+    template_name = 'vendor/product_confirm_delete.html'
+    success_url = reverse_lazy('dashboards:product_list')
+
+
+class ProductEditView(UpdateView):
+    model = Product
+    form_class = ProductCreateForm
+    template_name = 'vendor/product_edit.html'
+    success_url = reverse_lazy('dashboards:product_list')

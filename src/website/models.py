@@ -3,6 +3,16 @@ from accounts.models import CustomUser , Address
 from vendors.models import Vendor
 from django.core.validators import MinValueValidator, MaxValueValidator
 
+class Category(models.Model):
+    title = models.CharField(max_length=255)
+    parent_category = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True)
+    image = models.ImageField(upload_to='category_pics/', null=True)
+
+    class Meta:
+        verbose_name_plural = 'Categories'
+
+    def __str__(self):
+        return self.title
 
 class Product(models.Model):
     title = models.CharField(max_length=255)
@@ -13,6 +23,8 @@ class Product(models.Model):
     discount_value = models.FloatField(null=True, blank=True)
     vendor = models.ForeignKey(Vendor, on_delete=models.CASCADE, null=True, blank=True)
     main_image = models.ImageField(upload_to='product/main_images', null=True, blank=True)
+    in_stock = models.PositiveIntegerField(default=0, blank=True, null=True)
+    categories = models.ManyToManyField(Category, blank=True, null=True)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
@@ -49,16 +61,7 @@ class Comment(models.Model):
         return f'{self.customer.email} - {self.product.title}'
 
 
-class Category(models.Model):
-    title = models.CharField(max_length=255)
-    parent_category = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True)
-    image = models.ImageField(upload_to='category_pics/', null=True)
 
-    class Meta:
-        verbose_name_plural = 'Categories'
-
-    def __str__(self):
-        return self.title
 
 
 class ProductCategory(models.Model):

@@ -1,10 +1,20 @@
-{% extends 'dashboards/../vendor_dashboard_base.html' %}
+{% extends 'vendor_base.html' %}
 {% load static %}
 
 {% block content %}
 <div class="container my-5">
-    <h2 class="text-center mb-4">Products</h2>
-    
+    <div class="row">
+        <!-- Title for products list -->
+        <div class="col-12 mb-4 text-center">
+            <h2>محصولات</h2>
+        </div>
+
+        <!-- Left-aligned "Add New Product" button -->
+        <div class="col-12 col-md-4 mb-4">
+            <a href="{% url 'dashboards:product_create' %}" class="btn btn-primary">افزودن محصول</a>
+        </div>
+    </div>
+
     <!-- Products List -->
     <div class="row row-cols-1 row-cols-md-3 g-4">
         {% for product in products %}
@@ -25,13 +35,19 @@
                         {% endif %}
                     </div>
                     <div class="card-footer text-center">
-                        <a href="#" class="btn btn-primary btn-sm">View Details</a>
-                        <a href="#" class="btn btn-secondary btn-sm">Edit</a>
+                        <a href="{% url 'dashboards:product_edit' product.id %}" class="btn btn-secondary btn-sm">ویرایش</a>
+
+
+                        <!-- Delete product form -->
+                        <form method="post" action="{% url 'dashboards:product_delete' pk=product.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">حذف</button>
+                        </form>
                     </div>
                 </div>
             </div>
         {% empty %}
-            <p class="text-center">No products available.</p>
+            <p class="text-center">محصولی یافت نشد.</p>
         {% endfor %}
     </div>
 </div>

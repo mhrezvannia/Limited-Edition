@@ -1,10 +1,10 @@
-{% extends "dashboards/../vendor_dashboard_base.html" %}
+{% extends 'vendor_base.html' %}
 {% load static %}
 
 {% block content %}
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Create Product</button>
+    <button type="submit">ساخت محصول</button>
 </form>
 {% endblock %}
