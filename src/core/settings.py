@@ -29,6 +29,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
     'dashboards.apps.DashboardsConfig',
     'rest_framework',
     'easy_thumbnails',
+    'django_elasticsearch_dsl',
 ]
 
 MIDDLEWARE = [
@@ -174,5 +176,35 @@ THUMBNAIL_ALIASES = {
     '': {
         '400x400': {'size': (600, 600), 'crop': True},
         '800x800': {'size': (800, 800), 'crop': True},
+    },
+}
+
+
+JAZZMIN_SETTINGS = {
+    "site_title": "My Custom Admin",
+    "site_header": "My Django Admin",
+    "site_brand": "Limited Edition",
+    "welcome_sign": "Welcome to My Custom Admin",
+    "copyright": "My Company",
+    "search_model": "auth.User",  # Enable global search
+    "user_avatar": None,  # Customize user avatars
+    "topmenu_links": [  # Custom top menu links
+        {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
+        {"model": "auth.User"},  # A link to the User model
+    ],
+    "icons": {
+        "auth": "fas fa-users-cog",  # Custom icons for models
+        "auth.user": "fas fa-user",
+        "auth.Group": "fas fa-users",
+    },
+    "show_sidebar": True,  # Control whether to show a sidebar
+    "navigation_expanded": True,  # Expand the sidebar by default
+    "changeform_format": "collapsible",  # Customize change form appearance
+}
+
+
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': 'http://localhost:9200',  # Ensure the URL is correct with 'http://' and the port number
     },
 }

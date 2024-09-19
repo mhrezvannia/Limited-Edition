@@ -39,7 +39,7 @@
     <div class="offcanvas__close">+</div>
     <ul class="offcanvas__widget">
         <li><span class="icon_search search-switch"></span></li>
-        <li><a href="#"><span class="icon_heart_alt"></span>
+        <li><a href="{% url 'website:product_search' %}"><span class="icon_heart_alt"></span>
             <div class="tip">2</div>
         </a></li>
         <li><a href="#"><span class="icon_bag_alt"></span>
@@ -184,8 +184,8 @@
 <div class="search-model">
     <div class="h-100 d-flex align-items-center justify-content-center">
         <div class="search-close-switch">+</div>
-        <form class="search-model-form">
-            <input type="text" id="search-input" placeholder="Search here.....">
+        <form class="search-model-form" method="GET" action="{% url 'website:product_search' %}">
+            <input type="text" id="search-input" name="q" placeholder="Search here.....">
         </form>
     </div>
 </div>

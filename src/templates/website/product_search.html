@@ -31,23 +31,40 @@
                                 <div class="accordion" id="accordionExample">
                                     <div class="card">
                                         <div class="card-heading active">
-                                            <a data-toggle="collapse" data-target="#collapseOne">مردانه</a>
+                                            <a data-toggle="collapse" data-target="#collapseOne">Women</a>
                                         </div>
-                                        <div class="card-heading active">
-                                            <a data-toggle="collapse" data-target="#collapseOne">زنانه</a>
-                                        </div>
-                                        <div class="card-heading active">
-                                            <a data-toggle="collapse" data-target="#collapseOne">بچه گانه</a>
-                                        </div>
-                                        <div class="card-heading active">
-                                            <a data-toggle="collapse" data-target="#collapseOne">آرایشی و بهداشتی</a>
-                                        </div>
-                                        <div class="card-heading active">
-                                            <a href="#" data-toggle="collapse" data-target="#collapseOne">اکسسوری</a>
+                                        <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
+                                            <div class="card-body">
+                                                <ul>
+                                                    <li><a href="#">Coats</a></li>
+                                                    <li><a href="#">Jackets</a></li>
+                                                    <li><a href="#">Dresses</a></li>
+                                                    <li><a href="#">Shirts</a></li>
+                                                    <li><a href="#">T-shirts</a></li>
+                                                    <li><a href="#">Jeans</a></li>
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="sidebar__filter">
+                            <div class="section-title">
+                                <h4>Shop by price</h4>
+                            </div>
+                            <div class="filter-range-wrap">
+                                <div class="price-range ui-slider ui-corner-all ui-slider-horizontal ui-widget ui-widget-content"
+                                data-min="33" data-max="99"></div>
+                                <div class="range-slider">
+                                    <div class="price-input">
+                                        <p>Price:</p>
+                                        <input type="text" id="minamount">
+                                        <input type="text" id="maxamount">
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="#">Filter</a>
                         </div>
                     </div>
                 </div>
@@ -82,7 +99,6 @@
                                         <div class="product__price">
                                             {% if product.has_discount %}
                                                 <span style="color: #888; text-decoration: line-through; font-size: 0.9rem;">${{ product.price|floatformat:2 }}</span>
-{#                                                <span style="color: #ff4747; font-size: 1.1rem;"> ${{ product.final_price|floatformat:2 }}</span>#}
                                             {% else %}
                                                 <span style="color: #333; font-size: 1.1rem;">${{ product.price|floatformat:2 }}</span>
                                             {% endif %}

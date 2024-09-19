@@ -24,5 +24,6 @@ urlpatterns = [
     path('rates/<int:pk>/delete/', RateDeleteView.as_view(), name='rate_delete'),
 
     path('products/<int:pk>/comment/create/', CommentCreateView.as_view(), name='comment_create'),
+    path('search/', ProductSearchView.as_view(), name='product_search'),
 
 ]

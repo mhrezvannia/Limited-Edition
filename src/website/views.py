@@ -3,7 +3,8 @@ from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, DeleteView, UpdateView
 from .models import *
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import CommentForm
+from .forms import CommentForm, ProductSearchForm
+from django.db.models import Q
 
 
 class ContactView(TemplateView):
@@ -128,3 +129,28 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
     def get_success_url(self):
         # Redirect to the product detail page or any other URL after successful comment creation
         return reverse_lazy('website:product_detail', kwargs={'pk': self.kwargs['pk']})
+
+
+class ProductSearchView(ListView):
+    model = Product
+    template_name = 'website/product_search.html'
+    context_object_name = 'products'
+    paginate_by = 9
+
+    def get_queryset(self):
+        queryset = Product.objects.filter(is_active=True)
+        query = self.request.GET.get('q', '')
+
+        if query:
+            queryset = queryset.filter(
+                Q(title__icontains=query) |
+                Q(content__icontains=query) |
+                Q(categories__title__icontains=query)
+            ).distinct()
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = ProductSearchForm(self.request.GET or None)
+        return context
