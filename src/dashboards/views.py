@@ -219,3 +219,19 @@ class ProductEditView(UpdateView):
     form_class = ProductCreateForm
     template_name = 'vendor/product_edit.html'
     success_url = reverse_lazy('dashboards:product_list')
+
+
+class CommentListView(LoginRequiredMixin, ListView):
+    model = Comment
+    template_name = 'customer/comment_list.html'
+    context_object_name = 'Comments'
+    paginate_by = 12
+
+    def get_queryset(self):
+        return Comment.objects.filter(customer=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        comments = Comment.objects.filter(customer=self.request.user)
+        context['comments'] = comments
+        return context

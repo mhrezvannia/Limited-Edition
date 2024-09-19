@@ -23,4 +23,6 @@ urlpatterns = [
     path('rates/<int:pk>/edit/', RateUpdateView.as_view(), name='rate_update'),
     path('rates/<int:pk>/delete/', RateDeleteView.as_view(), name='rate_delete'),
 
+    path('products/<int:pk>/comment/create/', CommentCreateView.as_view(), name='comment_create'),
+
 ]

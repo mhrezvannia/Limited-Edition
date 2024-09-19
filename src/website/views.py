@@ -2,6 +2,8 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView, CreateView, DeleteView, UpdateView
 from .models import *
+from django.contrib.auth.mixins import LoginRequiredMixin
+from .forms import CommentForm
 
 
 class ContactView(TemplateView):
@@ -20,10 +22,27 @@ class ProductListView(ListView):
     paginate_by = 9
 
 
+from django.views.generic.detail import DetailView
+from .models import Product, Comment
+
+
 class ProductDetailView(DetailView):
     model = Product
     template_name = 'website/product-details.html'
     context_object_name = 'product'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        product = self.object
+
+        comments = Comment.objects.filter(product=product, approved=True)
+
+        context['comments'] = comments
+
+        context['related_products'] = Product.objects.exclude(pk=product.pk)[:4]
+
+        return context
 
 
 class ProductCreateView(CreateView):
@@ -91,3 +110,21 @@ class RateDeleteView(DeleteView):
     model = Rate
     template_name = 'rates/rate_confirm_delete.html'
     success_url = reverse_lazy('product_list')
+
+
+class CommentCreateView(LoginRequiredMixin, CreateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'website/comment_form.html'
+
+    def form_valid(self, form):
+        # Fetch the product using the URL parameter
+        product = get_object_or_404(Product, pk=self.kwargs['pk'])
+        # Set the product and customer for the comment
+        form.instance.product = product
+        form.instance.customer = self.request.user  # Assuming `CustomUser` is used as `User`
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        # Redirect to the product detail page or any other URL after successful comment creation
+        return reverse_lazy('website:product_detail', kwargs={'pk': self.kwargs['pk']})

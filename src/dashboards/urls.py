@@ -7,6 +7,7 @@ urlpatterns = [
     path('vendor/', VendorDashboardView.as_view(), name='vendor_dashboard'),
     path('vendor/edit/', VendorEditView.as_view(), name='vendor_edit'),
     path('customer/edit/', CustomerEditView.as_view(), name='customer_edit'),
+    path('customer/comments/', CommentListView.as_view(), name='comment_list'),
     path('customer/addresses/', CustomerAddressesView.as_view(), name='customer_addresses'),
     path('customer/addresses/create/', CustomerAddressCreateView.as_view(), name='customer_create_address'),
     path('customer/addresses/edit/', AddressEditView.as_view(), name='customer_edit_address'),
