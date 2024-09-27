@@ -45,9 +45,16 @@ class Cart(models.Model):
 
 
 class CartProduct(models.Model):
+    status_choices = [
+        ('Pending', 'Pending'),
+        ('Accepted', 'Accepted'),
+        ('Rejected', 'Rejected'),
+        ('Canceled', 'Canceled')
+    ]
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
+    status = models.CharField(max_length=10, choices=status_choices, default='Pending')
 
     class Meta:
         unique_together = ('cart', 'product')

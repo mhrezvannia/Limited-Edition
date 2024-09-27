@@ -38,13 +38,6 @@ class Product(models.Model):
     def __str__(self):
         return self.title
 
-    def final_price(self):
-        if self.has_discount:
-            if self.discount_type == 0:  # Percentage
-                return self.price - (self.price * self.discount_value / 100)
-            elif self.discount_type == 1:  # Fixed Amount
-                return self.price - self.discount_value
-        return self.price
 
 
 class ProductPicture(models.Model):
