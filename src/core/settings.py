@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -122,20 +122,15 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
-
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-
-
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-
 AUTH_USER_MODEL = 'accounts.CustomUser'
-
 
 AUTHENTICATION_BACKENDS = [
     'accounts.backends.CustomBackend',
@@ -171,14 +166,12 @@ REST_FRAMEWORK = {
     ]
 }
 
-
 THUMBNAIL_ALIASES = {
     '': {
         '400x400': {'size': (600, 600), 'crop': True},
         '800x800': {'size': (800, 800), 'crop': True},
     },
 }
-
 
 JAZZMIN_SETTINGS = {
     "site_title": "My Custom Admin",
@@ -201,7 +194,6 @@ JAZZMIN_SETTINGS = {
     "navigation_expanded": True,  # Expand the sidebar by default
     "changeform_format": "collapsible",  # Customize change form appearance
 }
-
 
 ELASTICSEARCH_DSL = {
     'default': {

@@ -26,6 +26,7 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('dashboards/', include('dashboards.urls')),
     path('vendor/', include('vendors.urls')),
+    path('orders/', include('orders.urls', namespace='orders')),
     path('api-auth/', include('rest_framework.urls')),
 
 ]

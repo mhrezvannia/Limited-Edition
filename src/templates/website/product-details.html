@@ -47,7 +47,6 @@
                     <div class="product__details__text">
                         <h3>{{ product.title }} <span>Brand: {{ product.vendor.name }}</span></h3>
                         <div class="rating">
-                            <!-- Static rating for now, can be dynamic if you have ratings -->
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
@@ -66,196 +65,77 @@
                             <div class="quantity">
                                 <span>Quantity:</span>
                                 <div class="pro-qty">
-                                    <input type="text" value="1">
+                                    <input type="number" id="quantity" value="1">
                                 </div>
                             </div>
-                            <a href="#" class="cart-btn"><span class="icon_bag_alt"></span> Add to cart</a>
+                            <a href="#" id="add-to-cart-btn" data-product-id="{{ product.id }}" class="cart-btn">
+                                <span class="icon_bag_alt"></span> Add to cart
+                            </a>
                             <ul>
                                 <li><a href="#"><span class="icon_heart_alt"></span></a></li>
                                 <li><a href="#"><span class="icon_adjust-horiz"></span></a></li>
                             </ul>
                         </div>
-                        <div class="product__details__widget">
-                            <ul>
-                                <li>
-                                    <span>Availability:</span>
-                                    <div class="stock__checkbox">
-                                        <label for="stockin">
-                                            In Stock
-                                            <input type="checkbox" id="stockin" {% if product.is_active %}checked{% endif %} disabled>
-                                            <span class="checkmark"></span>
-                                        </label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <span>Available size:</span>
-                                    <div class="size__btn">
-                                        <!-- Static for now, you can make it dynamic if you have sizes -->
-                                        <label for="xs-btn" class="active">
-                                            <input type="radio" id="xs-btn">
-                                            xs
-                                        </label>
-                                        <label for="s-btn">
-                                            <input type="radio" id="s-btn">
-                                            s
-                                        </label>
-                                        <label for="m-btn">
-                                            <input type="radio" id="m-btn">
-                                            m
-                                        </label>
-                                        <label for="l-btn">
-                                            <input type="radio" id="l-btn">
-                                            l
-                                        </label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <span>Promotions:</span>
-                                    <p>Free shipping</p>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-12">
-                    <div class="product__details__tab">
-                        <ul class="nav nav-tabs" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">Description</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">Reviews</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="tabs-1" role="tabpanel">
-                                <h6>Description</h6>
-                                <p>{{ product.content }}</p>
-                            </div>
-                            <div class="tab-pane" id="tabs-3" role="tabpanel">
-                                <h6>Reviews</h6>
-                                <!-- Button to Add New Review -->
-                                <div class="mb-3">
-                                    <a href="{% url 'website:comment_create' product.pk %}" class="btn btn-primary">Add New Review</a>
-                                </div>
-                                <!-- Display Existing Reviews -->
-                                {% if comments %}
-                                <div class="reviews-list">
-                                    {% for comment in comments %}
-                                    <div class="review-item">
-                                        <div class="review-item-header">
-                                            <h6>{{ comment.customer.email }}</h6>
-                                            <div class="review-item-date">{{ comment.created_at|date:"M d, Y" }}</div>
-                                        </div>
-                                        <div class="review-item-body">
-                                            <p>{{ comment.content }}</p>
-                                        </div>
-                                    </div>
-                                    {% endfor %}
-                                </div>
-                                {% else %}
-                                <p>No reviews yet.</p>
-                                {% endif %}
-                            </div>
-                        </div>
+                        <!-- Other product details -->
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <div class="related__title">
-                        <h5>RELATED PRODUCTS</h5>
-                    </div>
-                </div>
-                <!-- Example related products. These should be dynamically generated -->
-                {% for related_product in related_products %}
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="product__item">
-                        <div class="product__item__pic set-bg" data-setbg="{{ related_product.main_image.url }}">
-                            {% if related_product.is_new %}
-                            <div class="label new">New</div>
-                            {% endif %}
-                            <ul class="product__hover">
-                                <li><a href="{{ related_product.main_image.url }}" class="image-popup"><span class="arrow_expand"></span></a></li>
-                                <li><a href="#"><span class="icon_heart_alt"></span></a></li>
-                                <li><a href="#"><span class="icon_bag_alt"></span></a></li>
-                            </ul>
-                        </div>
-                        <div class="product__item__text">
-                            <h6><a href="{% url 'website:product_detail' related_product.pk %}">{{ related_product.title }}</a></h6>
-                            <div class="rating">
-                                <!-- Static rating -->
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
-                            <div class="product__price">${{ related_product.price }}</div>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
+            <!-- Related products and reviews section (if needed) -->
         </div>
     </section>
     <!-- Product Details Section End -->
 
     <!-- Instagram Begin -->
     <div class="instagram">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-1.jpg' %}">
-                        <div class="instagram__text">
-                            <i class="fa fa-instagram"></i>
-                            <a href="#">@ashion_shop</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-2.jpg' %}">
-                        <div class="instagram__text">
-                            <i class="fa fa-instagram"></i>
-                            <a href="#">@ashion_shop</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-3.jpg' %}">
-                        <div class="instagram__text">
-                            <i class="fa fa-instagram"></i>
-                            <a href="#">@ashion_shop</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-4.jpg' %}">
-                        <div class="instagram__text">
-                            <i class="fa fa-instagram"></i>
-                            <a href="#">@ashion_shop</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-5.jpg' %}">
-                        <div class="instagram__text">
-                            <i class="fa fa-instagram"></i>
-                            <a href="#">@ashion_shop</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-4 col-sm-4 p-0">
-                    <div class="instagram__item set-bg" data-setbg="{% static 'img/instagram/insta-6.jpg' %}">
-                        <div class="instagram__text">
-                            <i class="fa fa-instagram"></i>
-                            <a href="#">@ashion_shop</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!-- Instagram content here -->
     </div>
     <!-- Instagram End -->
 
+    <!-- AJAX Script for Add to Cart -->
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const addToCartButton = document.getElementById('add-to-cart-btn');
+    const quantityInput = document.getElementById('quantity');
+
+    addToCartButton.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        const productId = addToCartButton.getAttribute('data-product-id');
+        const quantity = quantityInput.value;
+
+        const url = "/orders/api/v1/cart/add/";
+        const csrfToken = '{{ csrf_token }}';
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken
+            },
+            body: JSON.stringify({
+                'product_id': productId,
+                'quantity': quantity
+            })
+        })
+        .then(response => response.json())  // Parse JSON response
+        .then(data => {
+            if (data.hasOwnProperty('product_id')) {
+                //in erorr ha ro behtar kon 
+                alert('Product added to cart successfully!');
+                // Optionally update cart count or other UI elements
+            }else if (data.hasOwnProperty('error')){
+                alert('we have erroiur : {data.error}')
+            }
+            else {
+                alert('Failed to add product to cart.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again.');
+        });
+    });
+});
+    </script>
 {% endblock %}
+

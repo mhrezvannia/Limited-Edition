@@ -26,6 +26,9 @@ class ProductListView(ListView):
 from django.views.generic.detail import DetailView
 from .models import Product, Comment
 
+from django.views.generic import DetailView
+from .models import Product, Comment
+
 
 class ProductDetailView(DetailView):
     model = Product
@@ -37,11 +40,12 @@ class ProductDetailView(DetailView):
 
         product = self.object
 
-        comments = Comment.objects.filter(product=product, approved=True)
-
+        # Fetch approved comments, ordered by created_at (newest first)
+        comments = Comment.objects.filter(product=product, approved=True).order_by('-created_at')
         context['comments'] = comments
 
-        context['related_products'] = Product.objects.exclude(pk=product.pk)[:4]
+        # Fetch related products, excluding the current product, ordered by id (or any preferred field)
+        context['related_products'] = Product.objects.exclude(pk=product.pk).order_by('-id')[:4]
 
         return context
 
