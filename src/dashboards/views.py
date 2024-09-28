@@ -7,6 +7,7 @@ from django.urls import reverse_lazy, reverse
 from accounts.forms import AddressForm
 
 from accounts.models import Customer, Address
+from orders.models import Order, OrderProduct
 from vendors.models import *
 from website.models import *
 from vendors.models import *
@@ -103,10 +104,10 @@ class AddressEditView(LoginRequiredMixin, UpdateView):
     template_name = 'customer/customer_edit_address.html'
 
     def get_object(self, queryset=None):
-        address_id = self.request.GET.get('address_id')  # Retrieve address_id from GET parameters
+        address_id = self.request.GET.get('address_id')
         if address_id:
             return get_object_or_404(Address, pk=address_id, user=self.request.user)
-        return redirect('error_page')  # Handle cases where address_id is missing
+        return redirect('error_page')
 
     def get_success_url(self):
         return reverse('dashboards:customer_addresses')
@@ -234,4 +235,30 @@ class CommentListView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         comments = Comment.objects.filter(customer=self.request.user)
         context['comments'] = comments
+        return context
+
+
+class OrderListView(LoginRequiredMixin, ListView):
+    model = Order
+    template_name = 'customer/customer_orders.html'
+    context_object_name = 'orders'
+
+    def get_queryset(self):
+        return Order.objects.filter(customer=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['customer'] = self.request.user.customer
+        return context
+
+
+class OrderDetailView(LoginRequiredMixin, DetailView):
+    model = Order
+    template_name = 'customer/order_detail.html'
+    context_object_name = 'order'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Correctly fetch the order products related to this order
+        context['order_products'] = OrderProduct.objects.filter(order=self.object)
         return context
