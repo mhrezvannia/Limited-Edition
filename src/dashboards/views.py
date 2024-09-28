@@ -259,6 +259,13 @@ class OrderDetailView(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Correctly fetch the order products related to this order
-        context['order_products'] = OrderProduct.objects.filter(order=self.object)
+        context['customer'] = self.request.user
+
+        order_products = OrderProduct.objects.filter(order=self.object)
+
+        valid_products = order_products.exclude(status__in=['Rejected', 'Canceled'])
+        total_price = sum(product.price * product.quantity for product in valid_products)
+
+        context['order_products'] = order_products
+        context['total_price'] = total_price
         return context
