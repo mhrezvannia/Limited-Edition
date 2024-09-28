@@ -60,14 +60,17 @@ class CustomLoginView(FormView):
     def form_valid(self, form):
         user = form.get_user()
         login(self.request, user)
+        return super().form_valid(form)
 
-        # if hasattr(user, 'customer'):
-        #     return redirect('website:index')
-        # elif VendorEmployee.objects.filter(pk=user.pk).exists():
-        #     return redirect('website:index')
-        #     # employee = VendorEmployee.objects.get(pk=user.pk)
-        #     # return redirect('vendor_dashboard', vendor_id=employee.vendor.id)
-        # else:
+
+class VendorLoginView(FormView):
+    form_class = CustomLoginForm
+    template_name = 'accounts/login.html'
+    success_url = reverse_lazy('dashboards:vendor_dashboard')
+
+    def form_valid(self, form):
+        user = form.get_user()
+        login(self.request, user)
         return super().form_valid(form)
 
 
@@ -79,5 +82,3 @@ class OwnerSignUpView(CreateView):
     def form_valid(self, form):
         form.save()
         return redirect('accounts:login')
-
-
