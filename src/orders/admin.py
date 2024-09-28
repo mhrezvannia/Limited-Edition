@@ -15,17 +15,17 @@ class DiscountCodeAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('id', 'customer', 'total_price', 'status', 'created_at', 'updated_at', 'discount_code', 'address')
+    list_display = ('id', 'customer', 'total_price', 'created_at', 'updated_at', 'discount_code', 'address')
     search_fields = ('customer__email',)
-    list_filter = ('status', 'created_at', 'updated_at')
+    list_filter = ('created_at', 'updated_at')
     ordering = ('-created_at',)
 
 
 @admin.register(OrderProduct)
 class OrderProductAdmin(admin.ModelAdmin):
-    list_display = ('order', 'product', 'quantity')
+    list_display = ('order', 'product', 'quantity', 'price', 'status')
     search_fields = ('order__id', 'product__name')
-    list_filter = ('order__created_at',)
+    list_filter = ('order__created_at', 'status')
     ordering = ('order__created_at',)
 
 

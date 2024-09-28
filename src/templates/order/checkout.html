@@ -7,27 +7,15 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h6 class="coupon__link"><span class="icon_tag_alt"></span> <a href="#">Have a coupon?</a> Click
-                    here to enter your code.</h6>
+                    <h6 class="coupon__link"><span class="icon_tag_alt"></span> <a href="#">Have a coupon?</a> Click here to enter your code.</h6>
                 </div>
             </div>
-            <form action="#" class="checkout__form">
+            <form action="{% url 'orders:check_out' %}" method="POST" class="checkout__form">
+                {% csrf_token %}
                 <div class="row">
                     <div class="col-lg-8">
                         <h5>Billing Detail</h5>
                         <div class="row">
-                            <div class="col-lg-12">
-                                <div class="checkout__form__input">
-                                    <p>Receiver Name <span>*</span></p>
-                                    <input type="text" name="receiver_name" required>
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="checkout__form__input">
-                                    <p>Receiver Phone Number <span>*</span></p>
-                                    <input type="text" name="receiver_phone" required>
-                                </div>
-                            </div>
                             <div class="col-lg-12">
                                 <div class="checkout__form__input">
                                     <p>Select Address <span>*</span></p>

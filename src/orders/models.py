@@ -19,7 +19,6 @@ class DiscountCode(models.Model):
 
 class Order(models.Model):
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
-    status = models.IntegerField(default=0)
     customer = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
@@ -31,11 +30,18 @@ class Order(models.Model):
 
 
 class OrderProduct(models.Model):
+    status_choices = [
+        ('Pending', 'Pending'),
+        ('Accepted', 'Accepted'),
+        ('Sending', 'Sending'),
+        ('Rejected', 'Rejected'),
+        ('Canceled', 'Canceled')
+    ]
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
     price = models.FloatField(null=True, blank=True)
-
+    status = models.CharField(max_length=10, choices=status_choices, default='Pending')
     class Meta:
         unique_together = ('order', 'product')
 

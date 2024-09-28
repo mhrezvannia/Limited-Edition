@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <section class="order-success">
+        <div class="container">
+            <h2>Your Order Has Been Placed Successfully!</h2>
+            <p>Thank you for your purchase. We will process your order shortly.</p>
+            <a href="{% url 'website:index' %}" class="btn btn-primary">Return to Home</a>
+        </div>
+    </section>
+{% endblock %}
