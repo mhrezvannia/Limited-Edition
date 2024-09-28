@@ -123,15 +123,12 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
     template_name = 'website/comment_form.html'
 
     def form_valid(self, form):
-        # Fetch the product using the URL parameter
         product = get_object_or_404(Product, pk=self.kwargs['pk'])
-        # Set the product and customer for the comment
         form.instance.product = product
-        form.instance.customer = self.request.user  # Assuming `CustomUser` is used as `User`
+        form.instance.customer = self.request.user
         return super().form_valid(form)
 
     def get_success_url(self):
-        # Redirect to the product detail page or any other URL after successful comment creation
         return reverse_lazy('website:product_detail', kwargs={'pk': self.kwargs['pk']})
 
 

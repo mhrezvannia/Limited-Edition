@@ -19,7 +19,6 @@ $(document).ready(function () {
         });
     });
 
-    // Update product quantity in cart
     $('.update-cart-item').on('change', function () {
         const cartProductId = $(this).data('cart-product-id');
         const newQuantity = $(this).val();
@@ -57,4 +56,53 @@ $(document).ready(function () {
     });
 
     // The clear cart functionality is removed, as there's no defined endpoint
+});
+
+$(document).ready(function() {
+    // Update item quantity
+    $('.update-quantity').on('change', function() {
+        const productId = $(this).data('product-id');
+        const newQuantity = $(this).val();
+
+        $.ajax({
+            url: '/api/v1/cart/update/', // Your update cart endpoint
+            type: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                product_id: productId,
+                quantity: newQuantity
+            }),
+            success: function(response) {
+                // Handle success
+                console.log('Updated cart item:', response);
+                // Optionally update the UI with new totals
+            },
+            error: function(xhr) {
+                console.error('Error updating cart:', xhr.responseJSON.error);
+            }
+        });
+    });
+
+    // Remove item from cart
+    $('.remove-item').on('click', function() {
+        const productId = $(this).data('product-id');
+
+        $.ajax({
+            url: '/api/v1/cart/remove/', // Your remove cart item endpoint
+            type: 'DELETE',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                product_id: productId
+            }),
+            success: function(response) {
+                // Handle success
+                console.log('Removed cart item:', response);
+                // Optionally remove the item from the UI
+                location.reload(); // Reload the page to reflect changes
+            },
+            error: function(xhr) {
+                console.error('Error removing cart item:', xhr.responseJSON.error);
+            }
+        });
+    });
 });

@@ -17,7 +17,7 @@ class CartCreateAPIView(APIView):
 
         return Response(CartSerializer(cart).data, status=status.HTTP_201_CREATED)
 
-# global execption traif mikoni
+
 class AddItemAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -26,8 +26,6 @@ class AddItemAPIView(APIView):
         if serializer.is_valid():
             product_id = serializer.validated_data['product_id']
             quantity = serializer.validated_data['quantity']
-
-            # Ensure quantity is a valid integer and greater than 0
             try:
                 quantity = int(quantity)
                 if quantity <= 0:
@@ -39,23 +37,16 @@ class AddItemAPIView(APIView):
                 )
 
             try:
-                # Ensure the product exists
                 product = Product.objects.get(id=product_id)
-
-                # Get or create the cart for the user
                 cart, created = Cart.objects.get_or_create(customer_id=request.user.id)
-
-                # Add the product to the cart or update its quantity
                 cart_product, created = CartProduct.objects.get_or_create(
                     cart=cart,
-                    product=product,  # Use the product object
+                    product=product,
                     defaults={'quantity': quantity}
                 )
                 if not created:
-                    # Update quantity if product already exists in the cart
                     cart_product.quantity += quantity
                     cart_product.save()
-
                 return Response(CartProductSerializer(cart_product).data, status=status.HTTP_200_OK)
 
             except Product.DoesNotExist:
@@ -120,11 +111,9 @@ class AddItemAPIView(APIView):
 class RemoveItemAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def delete(self, request):
-        product_id = request.data.get('product_id')
-
+    def delete(self, request, product_id):
         try:
-            cart = Cart.objects.get(customer_id=request.user.id)
+            cart = Cart.objects.get(customer=request.user)  # Adjusted for clarity
             cart_product = CartProduct.objects.get(cart=cart, product_id=product_id)
             cart_product.delete()
 
@@ -141,14 +130,13 @@ class RemoveItemAPIView(APIView):
 class UpdateItemAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def put(self, request):
-        product_id = request.data.get('product_id')
+    def put(self, request, product_id):
         quantity = request.data.get('quantity')
 
         try:
-            cart = Cart.objects.get(customer_id=request.user.id)
+            cart = Cart.objects.get(customer=request.user)
             cart_product = CartProduct.objects.get(cart=cart, product_id=product_id)
-            cart_product.quantity = quantity
+            cart_product.quantity = int(quantity)
             cart_product.save()
 
             return Response(CartProductSerializer(cart_product).data, status=status.HTTP_200_OK)

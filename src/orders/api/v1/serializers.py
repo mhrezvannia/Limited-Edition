@@ -17,9 +17,14 @@ class ProductSerializer(serializers.ModelSerializer):
 #         model = CartProduct
 #         fields = ['id', 'product', 'quantity', 'status']
 
+
 class CartProductSerializer(serializers.Serializer):
     product_id = serializers.IntegerField()
     quantity = serializers.IntegerField()
+    product_title = serializers.CharField(source='product.title', read_only=True)
+    product_price = serializers.DecimalField(source='product.price', max_digits=10, decimal_places=2, read_only=True)
+    product_image = serializers.ImageField(source='product.main_image', read_only=True)
+
 
 
 class CartSerializer(serializers.ModelSerializer):
