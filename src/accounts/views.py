@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import CreateView, FormView, UpdateView, DetailView
+from django.views.generic import CreateView, FormView, UpdateView, DetailView, ListView
 from accounts.forms import *
 from .forms import *
 from django.contrib.auth import authenticate, login
@@ -65,7 +65,7 @@ class CustomLoginView(FormView):
 
 class VendorLoginView(FormView):
     form_class = CustomLoginForm
-    template_name = 'accounts/login.html'
+    template_name = 'accounts/vendor_login.html'
     success_url = reverse_lazy('dashboards:vendor_dashboard')
 
     def form_valid(self, form):
@@ -82,3 +82,6 @@ class OwnerSignUpView(CreateView):
     def form_valid(self, form):
         form.save()
         return redirect('accounts:login')
+
+
+

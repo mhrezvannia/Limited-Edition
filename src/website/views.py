@@ -155,3 +155,12 @@ class ProductSearchView(ListView):
         context = super().get_context_data(**kwargs)
         context['form'] = ProductSearchForm(self.request.GET or None)
         return context
+
+
+class VendorListView(ListView):
+    model = Vendor
+    template_name = 'website/vendor_list.html'
+    context_object_name = 'vendors'
+
+    def get_queryset(self):
+        return Vendor.objects.all()
